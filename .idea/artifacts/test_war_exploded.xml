@@ -8,6 +8,7 @@
           <element id="module-output" name="test" />
         </element>
       </element>
+      <element id="library" level="project" name="c3p0-0.9.5.2" />
     </root>
   </artifact>
 </component>

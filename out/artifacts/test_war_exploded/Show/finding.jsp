@@ -1,266 +1,225 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Ederment
+  Date: 2020-10-19
+  Time: 19:59
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="UTF-8">
-    <title></title>
-    <script type="text/javascript" src="../../../js/angular/angular.js"></script>
-    <script>
-        var app = angular.module("myApp", []);
-        app.controller("myCtrl", function($scope) {
-            $scope.shops = [{
-                id: 80,
-                name: "iPhone",
-                price: 5400,
-                num:10,
-                state: false
-            }, {
-                id: 1200,
-                name: "ipad mini",
-                price: 2200,
-                num:20,
-                state: false
-            }, {
-                id: 500,
-                name: "ipad air",
-                price: 2340,
-                num:30,
-                state: false
-            }, {
-                id: 29,
-                name: "ipad",
-                price: 1420,
-                num:40,
-                state: false
-            }, {
-                id: 910,
-                name: "imac",
-                price: 6600,
-                num:50,
-                state: false
-            }];
-
-            //下拉菜单排序
-            $scope.orderSel = "";
-
-            /*$scope.de=function(index){
-             //删除当前项
-             $scope.shops.splice(index,1);
-            }*/
-
-            $scope.de = function(name, state) {
-                if(state) {
-                    if(window.confirm("确定要删除" + name + "吗？")) {
-                        for(index in $scope.shops) {
-                            if(name == $scope.shops[index].name) {
-                                $scope.shops.splice(index, 1);
-                            }
-                        }
-                    }
-                }else{
-                    alert("请先选择");
-                }
-            }
-            //修改价格
-            $scope.update = function(shop){
-                var newPrice = window.prompt("请输入要修改的"+shop.name+"商品的价格",shop.price);
-                if(newPrice == null || newPrice == ""){
-                    alert("商品价格不能为空")
-                }else if(isNaN(newPrice)){
-                    alert("商品价格必须是数字")
-                }else{
-                    shop.price = parseInt(newPrice);
-                }
-            }
-            //增加数量
-            $scope.add = function(shop){
-                shop.num++;
-            }
-            //减少数量
-            $scope.less = function(shop){
-                if(shop.num>=1){//商品数量大于1
-                    shop.num--;
-                }else{
-
-                }
-            }
-
-            //全选、全不选
-            $scope.selectAll = false;
-            $scope.selectAllFun = function() {
-                if($scope.selectAll) {
-                    for(index in $scope.shops) {
-                        $scope.shops[index].state = true;
-                    }
-                } else {
-                    for(index in $scope.shops) {
-                        $scope.shops[index].state = false;
-                    }
-                }
-            }
-
-            //反选
-            $scope.checkSelAll = function() {
-                var flag = false;
-                for(index in $scope.shops) {
-                    if(!$scope.shops[index].state) {
-                        //满足条件
-                        flag = true;
-                    }
-                }
-
-                if(flag) {
-                    $scope.selectAll = false;
-                } else {
-                    $scope.selectAll = true;
-                }
-            }
-
-            //批量删除
-            $scope.delSelect = function() {
-                var selArr = [];
-                for(index in $scope.shops) {
-                    if($scope.shops[index].state) {
-                        selArr.push($scope.shops[index].name)
-                    }
-                }
-
-                if(selArr.length <= 0) {
-                    alert("请先选择");
-                } else {
-                    if(window.confirm("确定要删除吗？")) {
-                        for(index1 in selArr) {
-                            for(index2 in $scope.shops) {
-                                if(selArr[index1] == $scope.shops[index2].name) {
-                                    $scope.shops.splice(index2, 1);
-                                }
-                            }
-                        }
-                    } else {
-
-                    }
-                }
-            }
-
-            //添加商品
-            $scope.isShow = false;
-            $scope.isShow2 = false;
-            $scope.showForm = function() {
-                if($scope.isShow) {
-                    $scope.isShow = false;
-                } else {
-                    $scope.isShow = true;
-                }
-            }
-            //提交按钮
-            $scope.submit = function() {
-                $scope.errorArr = [];
-                //判断id是否为空
-                if($scope.newId == null || $scope.newId == "") {
-                    $scope.errorArr.push("ID不能为空");
-                } else if(isNaN($scope.newId)) {
-                    $scope.errorArr.push("ID必须是数字");
-                }
-                if($scope.newName == null || $scope.newName == "") {
-                    $scope.errorArr.push("产品名称不能为空");
-                } else {
-                    for(index in $scope.shops) {
-                        if($scope.shops[index].name == $scope.newName) {
-                            $scope.errorArr.push("产品名称不能重复");
-                        }
-                    }
-                }
-                if($scope.newPrice == null || $scope.newPrice == "") {
-                    $scope.errorArr.push("价格不能为空");
-                } else if(isNaN($scope.newPrice)) {
-                    $scope.errorArr.push("价格必须是数字");
-                }
-
-                if($scope.errorArr.length > 0) {
-                    //显示列表
-                    $scope.isShow2 = true;
-                } else {
-                    $scope.isShow2 = false;
-                    //添加商品
-                    var newShop = {
-                        id: parseInt($scope.newId),
-                        name: $scope.newName,
-                        price: parseInt($scope.newPrice),
-                        num:1,
-                        state: false
-                    };
-                    $scope.shops.push(newShop);
-                    $scope.isShow = false;
-                }
-            }
-        })
-    </script>
+    <title>搜索结果</title>
 </head>
+<body>
 
-<body ng-app="myApp" ng-controller="myCtrl">
-<center>
-    <h3>商品列表</h3>
-    <input type="text" placeholder="商品名称" ng-model="search" />
-    <select ng-model="orderSel">
-        <option value="">--请选择--</option>
-        <option value="id">--id正序--</option>
-        <option value="-id">--id逆序--</option>
-        <option value="price">--价格正序--</option>
-        <option value="-price">--价格逆序--</option>
-    </select>
-    <button ng-click="delSelect()">批量删除</button>
-    <br /><br />
+<style>
 
-    <table border="1px solid blue;" cellpadding="10" cellspacing="0">
-        <thead>
-        <tr>
-            <th><input type="checkbox" ng-model="selectAll" ng-click="selectAllFun()" /> </th>
-            <th>产品编号</th>
-            <th>产品名称</th>
-            <th>产品价格</th>
-            <th>产品数量</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="shop in shops | filter:{name:search} | orderBy:orderSel">
-            <td><input type="checkbox" ng-model="shop.state" ng-click="checkSelAll()" /></td>
-            <td>{{shop.id}}</td>
-            <td>{{shop.name}}</td>
-            <td>{{shop.price}}</td>
-            <td>
-                <button ng-click="less(shop)">-</button>
-                <input type="text" ng-model="shop.num" size="1"/>
-                <button ng-click="add(shop)">+</button>
-            </td>
-            <td width="100px">
-                <button ng-click="de(shop.name,shop.state)">删除</button>
-                <button ng-click="update(shop)">修改</button>
-            </td>
-        </tr>
-        </tbody>
-    </table><br />
-    <button ng-click="showForm()">添加商品</button><br /><br />
+    td.temp{
+        border-right: 0px;
+        border-bottom: 0px;
+        background: #fff;
+        font-size:11px;
+        padding: 6px 6px 6px 12px;
+        color: #4f6b72;
+    }
 
-    <fieldset ng-show="isShow" id="" style="width: 400px;">
-        <legend>添加商品</legend><br />
-        <form>
-            产品编号：<input type="text" ng-model="newId" /><br /><br /> 产品名称：
-            <input type="text" ng-model="newName" /><br /><br /> 产品价格：
-            <input type="text" ng-model="newPrice" /><br /><br />
+    a.button2 {
+        height: 30px;
+        line-height: 30px;
+        padding: 0 11px;
+        background: #fff;
+        border: 1px #26bbdb solid;
+        border-radius: 3px;
+        display: inline-block;
+        text-decoration: none;
+        font-size: 15px;
+        outline: none;
+        color: #4f6b72;
+    }
 
-            <ul ng-show="isShow2" style="width: 200px; background-color: #f89;">
-                <li ng-repeat="error in errorArr">{{error}}</li>
-            </ul>
+    a.button {
+        height: 21px;
+        line-height: 21px;
+        padding: 0 11px;
+        background: #fff;
+        border: 1px #26bbdb solid;
+        border-radius: 3px;
+        display: inline-block;
+        text-decoration: none;
+        font-size: 14px;
+        outline: none;
+        color: #4f6b72;
+    }
 
-            <input ng-click="submit()" type="button" value="添加" />
-        </form>
+    table{
+        text-align: center;
+    }
 
-    </fieldset>
+    body {
+        font: normal 11px auto;
+        color: #4f6b72;
+        background: #E6EAE9;
+    }
 
-</center>
+    a {
+        color: #c75f3e;
+    }
+
+    #mytable {
+        width: 700px;
+        padding: 0;
+        margin: 0;
+    }
+
+    caption {
+        padding: 0 0 5px 0;
+        width: 700px;
+        font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        text-align: right;
+    }
+
+    th {
+        font: bold 15px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        color: #4f6b72;
+        border-right: 1px solid #C1DAD7;
+        border-bottom: 1px solid #C1DAD7;
+        border-top: 1px solid #C1DAD7;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 6px 6px 6px 12px;
+        background: #CAE8EA no-repeat;
+    }
+
+    th.nobg {
+        border-top: 1px solid #C1DAD7;
+        border-left: 1px solid #C1DAD7;
+        border-right: 1px solid #C1DAD7;
+        background: none;
+        padding: 6px 6px 6px 12px;
+        border-bottom: 1px solid #C1DAD7;
+    }
+
+    td {
+        border-right: 1px solid #C1DAD7;
+        border-bottom: 1px solid #C1DAD7;
+        background: #fff;
+        font-size:11px;
+        padding: 6px 6px 6px 12px;
+        color: #4f6b72;
+    }
+
+
+    td.alt {
+        background: #F5FAFA;
+        color: #797268;
+    }
+
+    th.spec {
+        border-left: 1px solid #C1DAD7;
+        border-top: 0;
+        background: #fff no-repeat;
+        font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    }
+
+    th.specalt {
+        border-left: 1px solid #C1DAD7;
+        border-top: 0;
+        background: #f5fafa no-repeat;
+        font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        color: #797268;
+    }
+
+    html>body td{ font-size:15px;}
+
+</style>
+
+<script language="JavaScript" type="text/javascript" class="ifr">
+
+</script>
+
+
+<table border=0 cellpadding=0 cellspacing=0 style="width:100% ;height:100%">
+
+    <tr>
+
+        <td style="width:100%;" align="center" valign="middle"  >
+
+
+            <table id="mytable" cellspacing="0" width="50%" weight="50%">
+
+
+                <tr>
+                    <th colspan="6" class="nobg" >商品列表</th>
+                </tr>
+                <tr>
+                    <th scope="col" class="nobg">商品编号</th>
+                    <th scope="col" >商品名称</th>
+                    <th scope="col" >商品价格</th>
+                    <th scope="col" >商品库存</th>
+                    <th scope="col" >商品类别</th>
+                    <th scope="col" >操作</th>
+                </tr>
+
+                <c:set var="flag" value="1"></c:set>
+                <c:set var="flag2" value="1"></c:set>
+                <c:set var="key" value="${keySearch}"></c:set>
+
+
+                <c:forEach items="${map2}" var="commodity">
+                    <c:if test="${fn:indexOf(commodity.name,key) != -1 }">
+
+
+
+                        <c:set var="flag" value="${flag + flag2}"></c:set>
+
+                        <c:choose>
+
+                            <c:when test="${flag%2 == 0}">
+
+                                <tr>
+                                    <th scope="row" class="specalt">${commodity.id}</th>
+                                    <td class="alt">${commodity.name}</td>
+                                    <td class="alt">${commodity.price}</td>
+                                    <td class="alt">${commodity.stock}</td>
+                                    <td class="alt">${commodity.type}</td>
+                                    <td>
+                                        <a href="commodity?method=add&id=${commodity.id}" class="button" onclick="return check()">加入购物车</a>
+                                    </td>
+                                </tr>
+
+                            </c:when>
+                            <c:otherwise>
+                                <tr>
+                                    <th scope="row" class="spec">${commodity.id}</th>
+                                    <td scope="col">${commodity.name}</td>
+                                    <td scope="col">${commodity.price}</td>
+                                    <td scope="col">${commodity.stock}</td>
+                                    <td scope="col">${commodity.type}</td>
+                                    <td>
+                                        <a href="commodity?method=add&id=${commodity.id}" class="button" onclick="return check()">加入购物车</a>
+                                    </td>
+                                </tr>
+                            </c:otherwise>
+                        </c:choose>
+
+                    </c:if>
+                </c:forEach>
+
+            </table>
+
+            <br>
+            <a href="/commodity" class="button2" style="width: 60px">返回</a>
+            <a href="Show/select.jsp" class="button2">继续搜索</a>
+            <a href="/commodity?method=findCar" class="button2" style="width: 60px">购物车</a>
+
+        </td>
+    </tr>
+
+</table>
+
 </body>
-
 </html>

@@ -1,5 +1,6 @@
 package servlet;
 
+import JDBC.Product;
 import entity.Commodity;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,20 +12,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @WebServlet("/commodity")
 public class ShoppingServlet extends HttpServlet {
 
-    static private Map<Integer, Commodity> map = new HashMap<>();
-    static private Map<Integer, Commodity> map2 = new HashMap<>();
+    static private Map<Integer, Commodity> consumer_map = new HashMap<>();
+    static private Map<Integer, Commodity> commodity_map;
 
     static {
-        map2.put(1,new Commodity(1,"ºìÅôÔ¶",10.0,1,"A"));
-        map2.put(2,new Commodity(2,"³ÈÅôÔ¶",5.0,2,"B"));
-        map2.put(3,new Commodity(3,"»ÆÅôÔ¶",3.0,3,"C"));
-        map2.put(4,new Commodity(4,"ÂÌÅôÔ¶",1.0,4,"D"));
+        commodity_map = Product.get_commodity();
     }
 
     @Override
@@ -40,10 +36,8 @@ public class ShoppingServlet extends HttpServlet {
         Integer id = Integer.parseInt(idStr);
         Double price = Double.parseDouble(scoreStr);
         Commodity commodity = new Commodity(id,name,price,stock,type);
-        map.put(id, commodity);
+        consumer_map.put(id, commodity);
         resp.sendRedirect("/commodity");
-
-
 
     }
 
@@ -57,96 +51,80 @@ public class ShoppingServlet extends HttpServlet {
             method = "findAll";
         }
 
-
-
         switch (method){
             case "reduce":
                 String idStr = req.getParameter("id");
                 Integer id = Integer.parseInt(idStr);
-                int amount = map.get(id).getAmount();
+                int amount = consumer_map.get(id).getAmount();
                 if (amount > 1){
-                    map.get(id).setAmount(amount - 1);
+                    consumer_map.get(id).setAmount(amount - 1);
                 }else{
-                    map.remove(id);
+                    consumer_map.remove(id);
                 }
-                req.setAttribute("map",map.values());
+                req.setAttribute("map", consumer_map.values());
                 req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
                 break;
 
             case "delete":
                 idStr = req.getParameter("id");
                 id = Integer.parseInt(idStr);
-                map.remove(id);
-                req.setAttribute("map",map.values());
+                consumer_map.remove(id);
+                req.setAttribute("map", consumer_map.values());
                 req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
                 break;
 
             case "findAll":
-                req.setAttribute("map2",map2.values());
+                req.setAttribute("map2", commodity_map.values());
                 req.getRequestDispatcher("Show/market.jsp").forward(req,resp);
                 break;
 
             case "findCar":
-                req.setAttribute("map",map.values());
+                req.setAttribute("map", consumer_map.values());
                 req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
                 break;
 
             case "addAmount":
                 idStr = req.getParameter("id");
                 id = Integer.parseInt(idStr);
-                map.get(id).setAmount(map.get(id).getAmount() + 1);
-                req.setAttribute("map",map.values());
+                consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
+                req.setAttribute("map", consumer_map.values());
                 req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
                 break;
 
             case "add":
                 idStr = req.getParameter("id");
                 id = Integer.parseInt(idStr);
-                Set<Map.Entry<Integer, Commodity>> temp = map2.entrySet();
+                Set<Map.Entry<Integer, Commodity>> temp = commodity_map.entrySet();
                 Iterator<Map.Entry<Integer, Commodity>> solve = temp.iterator();
-                Set<Map.Entry<Integer, Commodity>> temp2 = map.entrySet();
+                Set<Map.Entry<Integer, Commodity>> temp2 = consumer_map.entrySet();
                 Iterator<Map.Entry<Integer, Commodity>> solve2 = temp2.iterator();
                 Commodity value2;
-                if (map.get(id)==null){
-                    Commodity value = map2.get(id);
+                if (consumer_map.get(id)==null){
+                    Commodity value = commodity_map.get(id);
                     Integer temp_id = value.getId();
                     String name = value.getName();
                     double price = value.getPrice();
                     String type = value.getType();
                     value2 = new Commodity(temp_id,name,price,type,1);
-                    map.put(id,value2);
+                    consumer_map.put(id,value2);
                 }else {
-                    map.get(id).setAmount(map.get(id).getAmount() + 1);
+                    consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
                 }
-                req.setAttribute("map",map.values());
+                req.setAttribute("map", consumer_map.values());
                 resp.sendRedirect("/commodity");
                 break;
 
             case "clean":
-                map.clear();
+                consumer_map.clear();
                 resp.sendRedirect("/commodity");
                 break;
 
-            case  "find":
+            case "find":
+                req.setAttribute("map2", commodity_map.values());
+                String keySearch = req.getParameter("keySearch");
+                req.setAttribute("keySearch",keySearch);
+                req.getRequestDispatcher("Show/finding.jsp").forward(req,resp);
+                break;
         }
     }
-
-    public void compare(String word){
-        Set<Map.Entry<Integer, Commodity>> temp = map2.entrySet();
-        Iterator<Map.Entry<Integer, Commodity>> solve = temp.iterator();
-
-
-    }
-
-    public boolean compileKeyWord(String word, String keyWord) {
-        Pattern pn = Pattern.compile(keyWord+"\\w|\\w"+keyWord+"\\w|\\w"+keyWord);
-        Matcher mr = null;
-        mr = pn.matcher(word);
-        if (mr.find())  {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
 }

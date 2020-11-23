@@ -1,5 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="$fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: Ederment
@@ -8,19 +6,138 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <html>
 <head>
-    <title>Title</title>
+    <title>搜索结果</title>
 </head>
 <body>
 
-<script language="JavaScript" type="text/javascript" class="ifr">
+<style>
 
-    function check(reg){
-        var i=str.search(reg);
-        return i;
+    td.temp{
+        border-right: 0px;
+        border-bottom: 0px;
+        background: #fff;
+        font-size:11px;
+        padding: 6px 6px 6px 12px;
+        color: #4f6b72;
     }
 
+    a.button2 {
+        height: 30px;
+        line-height: 30px;
+        padding: 0 11px;
+        background: #fff;
+        border: 1px #26bbdb solid;
+        border-radius: 3px;
+        display: inline-block;
+        text-decoration: none;
+        font-size: 15px;
+        outline: none;
+        color: #4f6b72;
+    }
+
+    a.button {
+        height: 21px;
+        line-height: 21px;
+        padding: 0 11px;
+        background: #fff;
+        border: 1px #26bbdb solid;
+        border-radius: 3px;
+        display: inline-block;
+        text-decoration: none;
+        font-size: 14px;
+        outline: none;
+        color: #4f6b72;
+    }
+
+    table{
+        text-align: center;
+    }
+
+    body {
+        font: normal 11px auto;
+        color: #4f6b72;
+        background: #E6EAE9;
+    }
+
+    a {
+        color: #c75f3e;
+    }
+
+    #mytable {
+        width: 700px;
+        padding: 0;
+        margin: 0;
+    }
+
+    caption {
+        padding: 0 0 5px 0;
+        width: 700px;
+        font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        text-align: right;
+    }
+
+    th {
+        font: bold 15px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        color: #4f6b72;
+        border-right: 1px solid #C1DAD7;
+        border-bottom: 1px solid #C1DAD7;
+        border-top: 1px solid #C1DAD7;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 6px 6px 6px 12px;
+        background: #CAE8EA no-repeat;
+    }
+
+    th.nobg {
+        border-top: 1px solid #C1DAD7;
+        border-left: 1px solid #C1DAD7;
+        border-right: 1px solid #C1DAD7;
+        background: none;
+        padding: 6px 6px 6px 12px;
+        border-bottom: 1px solid #C1DAD7;
+    }
+
+    td {
+        border-right: 1px solid #C1DAD7;
+        border-bottom: 1px solid #C1DAD7;
+        background: #fff;
+        font-size:11px;
+        padding: 6px 6px 6px 12px;
+        color: #4f6b72;
+    }
+
+
+    td.alt {
+        background: #F5FAFA;
+        color: #797268;
+    }
+
+    th.spec {
+        border-left: 1px solid #C1DAD7;
+        border-top: 0;
+        background: #fff no-repeat;
+        font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    }
+
+    th.specalt {
+        border-left: 1px solid #C1DAD7;
+        border-top: 0;
+        background: #f5fafa no-repeat;
+        font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        color: #797268;
+    }
+
+    html>body td{ font-size:15px;}
+
+</style>
+
+<script language="JavaScript" type="text/javascript" class="ifr">
 
 </script>
 
@@ -49,49 +166,55 @@
 
                 <c:set var="flag" value="1"></c:set>
                 <c:set var="flag2" value="1"></c:set>
+                <c:set var="key" value="${keySearch}"></c:set>
+
 
                 <c:forEach items="${map2}" var="commodity">
+                    <c:if test="${fn:indexOf(commodity.name,key) != -1 }">
 
-                    <c:set var="flag" value="${flag + flag2}"></c:set>
 
-                    <c:choose>
 
-                        <c:when test="${flag%2 == 0}">
+                        <c:set var="flag" value="${flag + flag2}"></c:set>
 
-                            <c:if test="${$fn:indexOf('commodity.name','') != -1}">
+                        <c:choose>
 
-                            </c:if>
+                            <c:when test="${flag%2 == 0}">
 
-                            <tr>
-                                <th scope="row" class="specalt">${commodity.id}</th>
-                                <td class="alt">${commodity.name}</td>
-                                <td class="alt">${commodity.price}</td>
-                                <td class="alt">${commodity.stock}</td>
-                                <td class="alt">${commodity.type}</td>
-                                <td>
-                                    <a href="commodity?method=add&id=${commodity.id}" class="button" onclick="return check()">加入购物车</a>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <th scope="row" class="specalt">${commodity.id}</th>
+                                    <td class="alt">${commodity.name}</td>
+                                    <td class="alt">${commodity.price}</td>
+                                    <td class="alt">${commodity.stock}</td>
+                                    <td class="alt">${commodity.type}</td>
+                                    <td>
+                                        <a href="commodity?method=add&id=${commodity.id}" class="button" onclick="return check()">加入购物车</a>
+                                    </td>
+                                </tr>
 
-                        </c:when>
-                        <c:otherwise>
-                            <tr>
-                                <th scope="row" class="spec">${commodity.id}</th>
-                                <td scope="col">${commodity.name}</td>
-                                <td scope="col">${commodity.price}</td>
-                                <td scope="col">${commodity.stock}</td>
-                                <td scope="col">${commodity.type}</td>
-                                <td>
-                                    <a href="commodity?method=add&id=${commodity.id}" class="button" onclick="return check()">加入购物车</a>
-                                </td>
-                            </tr>
-                        </c:otherwise>
+                            </c:when>
+                            <c:otherwise>
+                                <tr>
+                                    <th scope="row" class="spec">${commodity.id}</th>
+                                    <td scope="col">${commodity.name}</td>
+                                    <td scope="col">${commodity.price}</td>
+                                    <td scope="col">${commodity.stock}</td>
+                                    <td scope="col">${commodity.type}</td>
+                                    <td>
+                                        <a href="commodity?method=add&id=${commodity.id}" class="button" onclick="return check()">加入购物车</a>
+                                    </td>
+                                </tr>
+                            </c:otherwise>
+                        </c:choose>
 
-                    </c:choose>
-
+                    </c:if>
                 </c:forEach>
 
             </table>
+
+            <br>
+            <a href="/commodity" class="button2" style="width: 60px">返回</a>
+            <a href="Show/select.jsp" class="button2">继续搜索</a>
+            <a href="/commodity?method=findCar" class="button2" style="width: 60px">购物车</a>
 
         </td>
     </tr>

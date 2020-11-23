@@ -9,24 +9,15 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>我的购物车</title>
+    <title>商品搜索</title>
 </head>
 <body>
 
 <style>
 
-    a.button {
-        height: 21px;
-        line-height: 21px;
-        padding: 0 11px;
-        background: #fff;
-        border: 1px #26bbdb solid;
-        border-radius: 3px;
-        display: inline-block;
-        text-decoration: none;
-        font-size: 14px;
-        outline: none;
-        color: #4f6b72;
+
+    input::-ms-input-placeholder{
+        text-align: center;
     }
 
     a.button2 {
@@ -43,6 +34,21 @@
         color: #4f6b72;
     }
 
+    input.button {
+
+        height: 21px;
+        line-height: 21px;
+        padding: 0 11px;
+        background: #fff;
+        border: 1px #26bbdb solid;
+        border-radius: 3px;
+        display: inline-block;
+        text-decoration: none;
+        font-size: 14px;
+        outline: none;
+        color: #4f6b72;
+    }
+
     table{
         text-align: center;
     }
@@ -53,13 +59,12 @@
         background: #E6EAE9;
     }
 
-
     a {
         color: #c75f3e;
     }
 
     #mytable {
-        width: 700px;
+        width: 500px;
         padding: 0;
         margin: 0;
     }
@@ -135,9 +140,6 @@
 
 </style>
 
-<script language="JavaScript" type="text/javascript" class="ifr">
-</script>
-
 <table border=0 cellpadding=0 cellspacing=0 style="width:100% ;height:100%">
 
     <tr>
@@ -146,11 +148,30 @@
 
 
             <table id="mytable" cellspacing="0" width="50%" weight="50%">
-                <td>
-                    <input type="text" id="button">
-                    <input type="button" value="搜索" onclick="javascript:location.href='finding.jsp'">
-                </td>
+
+                    <tr>
+                        <th scope="col" class="nobg" >输入商品</th>
+                        <th scope="col" >操作</th>
+
+                    <form action="/commodity" method="get">
+                            <tr>
+                                <th scope="row" class="specalt">
+                                    <input type="text" name="keySearch" class="button" style="width:450px;" placeholder="请输入商品名或关键字">
+                                </th>
+
+
+                                <input type="hidden" name="method" value="find" >
+
+                                <td class="alt">
+                                    <input type="submit" class="button" value="搜索">
+                                </td>
+                            </tr>
+                    </form>
+
             </table>
+            <br>
+            <a href="/commodity" class="button2" style="width:  45px">返回</a>
+            <a href="/commodity?method=findCar" class="button2">购物车</a>
         </td>
     </tr>
 

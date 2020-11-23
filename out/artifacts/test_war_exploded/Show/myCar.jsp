@@ -1,5 +1,6 @@
 <%@ page import="entity.Commodity" %>
-<%@ page import="java.util.Map" %><%--
+<%@ page import="java.util.Map" %>
+<%--
   Created by IntelliJ IDEA.
   User: Ederment
   Date: 2020-10-19

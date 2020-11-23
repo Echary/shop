@@ -9,7 +9,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>我的购物车</title>
+    <title>商品列表</title>
 </head>
 <body>
 
@@ -200,8 +200,9 @@
                 </c:forEach>
             </table>
             <br>
-            <a href="finding.jsp" class="button2">搜索商品</a>
-            <a href="commodity?method=findCar" class="button2">我的购物车</a>
+            <a href="/cookieLogout" class="button2">退出登录</a>
+            <a href="Show/select.jsp" class="button2">搜索商品</a>
+            <a href="commodity?method=findCar" class="button2" style="width: 60px">购物车</a>
         </td>
     </tr>
 

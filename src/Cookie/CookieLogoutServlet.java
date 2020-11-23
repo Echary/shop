@@ -17,7 +17,7 @@ public class CookieLogoutServlet extends HttpServlet {
             if (cookie.getName().equals("name")){
                 cookie.setMaxAge(0);
                 resp.addCookie(cookie);
-                resp.sendRedirect("cookie_login.jsp");
+                resp.sendRedirect("/Login/cookie_login.jsp");
             }
         }
     }
