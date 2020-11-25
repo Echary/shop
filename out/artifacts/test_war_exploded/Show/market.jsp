@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>商品列表</title>
@@ -14,6 +15,7 @@
 <body>
 
 <style>
+
 
     a.button {
         height: 21px;
@@ -104,6 +106,7 @@
     }
 
 
+
     td.alt {
         background: #F5FAFA;
         color: #797268;
@@ -124,6 +127,15 @@
         color: #797268;
     }
 
+    th.temp{
+        border-top: 0px solid;
+        border-left: 0px solid ;
+        border-right: 0px solid ;
+        background: none;
+        padding: 6px 6px 6px 12px;
+        border-bottom: 0px solid ;
+    }
+
     .ifr{
         position: relative;
         z-index:1003;
@@ -136,9 +148,49 @@
 </style>
 
 <script language="JavaScript" type="text/javascript" class="ifr">
+
     function check(){
+        <c:set var="login" value="${login}"></c:set>
+
+        <c:choose>
+
+        <c:when test="${login eq'login'}">
+        check1()
+        </c:when>
+
+        <c:otherwise>
+        check2();
+        </c:otherwise>
+
+        </c:choose>
+    }
+
+    function checking(){
+        <c:set var="login" value="${login}"></c:set>
+
+        <c:choose>
+
+        <c:when test="${login eq'login'}">
+        </c:when>
+
+        <c:otherwise>
+        check2();
+        </c:otherwise>
+
+        </c:choose>
+    }
+
+    function check1(){
         alert("添加成功")
     }
+
+    function check2(){
+        alert("请登录!")
+    }
+
+
+
+
 </script>
 
 <table border=0 cellpadding=0 cellspacing=0 style="width:100% ;height:100%">
@@ -163,6 +215,7 @@
 
                 <c:set var="flag" value="1"></c:set>
                 <c:set var="flag2" value="1"></c:set>
+
 
                 <c:forEach items="${map2}" var="commodity">
 
@@ -200,9 +253,33 @@
                 </c:forEach>
             </table>
             <br>
-            <a href="/cookieLogout" class="button2">退出登录</a>
-            <a href="Show/select.jsp" class="button2">搜索商品</a>
-            <a href="commodity?method=findCar" class="button2" style="width: 60px">购物车</a>
+
+            <table class="temp">
+
+
+                <c:set var="login" value="${login}"></c:set>
+                <c:choose>
+                <c:when test="${login eq'login'}">
+
+                    <a href="/cookieLogout" class="button2">退出登录</a>
+
+                </c:when>
+                <c:otherwise>
+                    <form name='login' action='cookieLogin' method='post'>
+                        <a href='javascript:document.login.submit();' class="button2" style="width: 60px">登录</a>
+                    </form>
+
+                   <%-- <a href="/cookieLogin" class="button2" style="width: 60px">登录</a>--%>
+                </c:otherwise>
+                </c:choose>
+
+
+                <a href="Show/select.jsp" class="button2">搜索商品</a>
+
+                <a href="commodity?method=findCar" class="button2" style="width: 60px" onclick="return checking()">购物车</a>
+
+            </table>
+
         </td>
     </tr>
 

@@ -1,5 +1,6 @@
 package servlet;
 
+import Cookie.CookieLoginServlet;
 import JDBC.Product;
 import entity.Commodity;
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ public class ShoppingServlet extends HttpServlet {
 
     static private Map<Integer, Commodity> consumer_map = new HashMap<>();
     static private Map<Integer, Commodity> commodity_map;
+    static private boolean login = false;
 
     static {
         commodity_map = Product.get_commodity();
@@ -38,12 +40,16 @@ public class ShoppingServlet extends HttpServlet {
         Commodity commodity = new Commodity(id,name,price,stock,type);
         consumer_map.put(id, commodity);
         resp.sendRedirect("/commodity");
-
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        if(CookieLoginServlet.login == true){
+            login = true;
+        }else {
+            login = false;
+        }
 
         String method = req.getParameter("method");
 
@@ -74,13 +80,23 @@ public class ShoppingServlet extends HttpServlet {
                 break;
 
             case "findAll":
+                if(login == true) {
+                    req.setAttribute("login","login");
+
+                }else {
+                    req.setAttribute("login","no");
+                }
                 req.setAttribute("map2", commodity_map.values());
                 req.getRequestDispatcher("Show/market.jsp").forward(req,resp);
                 break;
 
             case "findCar":
-                req.setAttribute("map", consumer_map.values());
-                req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
+                if (login == true) {
+                    req.setAttribute("map", consumer_map.values());
+                    req.getRequestDispatcher("Show/myCar.jsp").forward(req, resp);
+                }else {
+                    resp.sendRedirect("Login/cookie_login.jsp");
+                }
                 break;
 
             case "addAmount":
@@ -92,26 +108,30 @@ public class ShoppingServlet extends HttpServlet {
                 break;
 
             case "add":
-                idStr = req.getParameter("id");
-                id = Integer.parseInt(idStr);
-                Set<Map.Entry<Integer, Commodity>> temp = commodity_map.entrySet();
-                Iterator<Map.Entry<Integer, Commodity>> solve = temp.iterator();
-                Set<Map.Entry<Integer, Commodity>> temp2 = consumer_map.entrySet();
-                Iterator<Map.Entry<Integer, Commodity>> solve2 = temp2.iterator();
-                Commodity value2;
-                if (consumer_map.get(id)==null){
-                    Commodity value = commodity_map.get(id);
-                    Integer temp_id = value.getId();
-                    String name = value.getName();
-                    double price = value.getPrice();
-                    String type = value.getType();
-                    value2 = new Commodity(temp_id,name,price,type,1);
-                    consumer_map.put(id,value2);
+                if (login == true){
+                    idStr = req.getParameter("id");
+                    id = Integer.parseInt(idStr);
+                    Set<Map.Entry<Integer, Commodity>> temp = commodity_map.entrySet();
+                    Iterator<Map.Entry<Integer, Commodity>> solve = temp.iterator();
+                    Set<Map.Entry<Integer, Commodity>> temp2 = consumer_map.entrySet();
+                    Iterator<Map.Entry<Integer, Commodity>> solve2 = temp2.iterator();
+                    Commodity value2;
+                    if (consumer_map.get(id)==null){
+                        Commodity value = commodity_map.get(id);
+                        Integer temp_id = value.getId();
+                        String name = value.getName();
+                        double price = value.getPrice();
+                        String type = value.getType();
+                        value2 = new Commodity(temp_id,name,price,type,1);
+                        consumer_map.put(id,value2);
+                    }else {
+                        consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
+                    }
+                    req.setAttribute("map", consumer_map.values());
+                    resp.sendRedirect("/commodity");
                 }else {
-                    consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
+                    resp.sendRedirect("Login/cookie_login.jsp");
                 }
-                req.setAttribute("map", consumer_map.values());
-                resp.sendRedirect("/commodity");
                 break;
 
             case "clean":
@@ -126,5 +146,9 @@ public class ShoppingServlet extends HttpServlet {
                 req.getRequestDispatcher("Show/finding.jsp").forward(req,resp);
                 break;
         }
+    }
+
+    public static void logOut(){
+        consumer_map.clear();
     }
 }

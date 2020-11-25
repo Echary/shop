@@ -13,28 +13,21 @@ import java.io.IOException;
 @WebServlet("/cookieLogin")
 public class CookieLoginServlet extends HttpServlet {
 
-   /* private String myUsername = "admin";
-    private String myPassword = "123123";*/
+    public static boolean login = false;
+    public static String user = null;
+    private static boolean check = false;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       /* String username = req.getParameter("username");
-        String password =  req.getParameter("password");
-        if (username.equals(myUsername) && password.equals(myPassword)){
-            Cookie cookie = new Cookie("name",username);
-            resp.addCookie(cookie);
-            resp.sendRedirect("Login/cookie_welcome.jsp");
-        }else {
-            resp.sendRedirect("Login/cookie_login.jsp");
-        }*/
 
         String username = req.getParameter("username");
         String password =  req.getParameter("password");
-        boolean check = User.check(username,password);
-        System.out.println(check);
+        check = User.check(username,password);
         if (check == true){
             Cookie cookie = new Cookie("name",username);
             resp.addCookie(cookie);
+            login = true;
+            user = username;
             resp.sendRedirect("Login/cookie_welcome.jsp");
         }else {
             resp.sendRedirect("Login/cookie_login.jsp");
@@ -42,7 +35,4 @@ public class CookieLoginServlet extends HttpServlet {
 
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    }
 }

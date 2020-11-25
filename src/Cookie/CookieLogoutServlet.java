@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import static Cookie.CookieLoginServlet.login;
 
 @WebServlet("/cookieLogout")
 public class CookieLogoutServlet extends HttpServlet {
@@ -15,9 +16,11 @@ public class CookieLogoutServlet extends HttpServlet {
         Cookie[] cookies = req.getCookies();
         for (Cookie cookie:cookies){
             if (cookie.getName().equals("name")){
+                login = false;
+                servlet.ShoppingServlet.logOut();
                 cookie.setMaxAge(0);
                 resp.addCookie(cookie);
-                resp.sendRedirect("/Login/cookie_login.jsp");
+                resp.sendRedirect("/Login/cookie_logout.jsp");
             }
         }
     }
