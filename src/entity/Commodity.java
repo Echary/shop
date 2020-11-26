@@ -1,7 +1,7 @@
 package entity;
 
 public class Commodity {
-    private Integer id;
+    private String id;
     private String name;
     private Double price;
     private int stock;
@@ -40,11 +40,11 @@ public class Commodity {
         this.price = price;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -56,7 +56,7 @@ public class Commodity {
         this.name = name;
     }
 
-    public Commodity(Integer id, String name, Double price, int stock, String type) {
+    public Commodity(String id, String name, Double price, int stock, String type) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -64,7 +64,7 @@ public class Commodity {
         this.type = type;
     }
 
-    public Commodity(Integer id, String name, Double price, String type, int amount){
+    public Commodity(String id, String name, Double price, String type, int amount){
         this.id = id;
         this.name = name;
         this.price = price;

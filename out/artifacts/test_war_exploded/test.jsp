@@ -38,7 +38,7 @@
 <div style="margin-top:10px;">
     <p style="font-size: 10px;">支持jpg、png、bmp格式</p>
     <div>
-        <input style="width:150px;" type="file" accept="image/*" id="filesInput" οnchange="imgLoaded()">
+        <input style="width:150px;" type="file" accept="image/*" id="filesInput" onchange="imgLoaded()">
     </div>
     <div >
         <p id="info" style="color:red;"></p>
