@@ -5,13 +5,11 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static JDBC.User.getUser;
-
 
 public class Product {
 
     static private Map<String, Commodity> map = new HashMap<>();
-    static private Map<String, Commodity> temp = new HashMap<>();
+    static private Map<String, Commodity> map2 = new HashMap<>();
     static private entity.User user;
 
     public static Map<String, Commodity> get_commodity(){
@@ -35,12 +33,12 @@ public class Product {
         return map;
     }
 
-    public static void User(){
-        user = getUser();
+    public static void getUser(){
+        user = User.getUser();
     }
 
     public static void addProduct(Commodity commodity){
-        if(user == null) User();
+        if(user == null) getUser();
         try {
             Connection connection = Pool.create();
             String sql = "INSERT INTO " + user.getCar() + "(product_id,name,price,type,amount) VALUES(?,?,?,?,?)";

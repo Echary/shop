@@ -28,6 +28,7 @@ public class CookieLoginServlet extends HttpServlet {
             resp.addCookie(cookie);
             login = true;
             user = username;
+
             resp.sendRedirect("Login/cookie_welcome.jsp");
         }else {
             resp.sendRedirect("Login/cookie_login.jsp");

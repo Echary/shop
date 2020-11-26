@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +18,7 @@ import static JDBC.Product.addProduct;
 @WebServlet("/commodity")
 public class ShoppingServlet extends HttpServlet {
 
-    static private Map<String, Commodity> consumer_map = new HashMap<>();
+    static public Map<String, Commodity> consumer_map;
     static private Map<String, Commodity> commodity_map;
     static private boolean login = false;
 
@@ -48,6 +47,7 @@ public class ShoppingServlet extends HttpServlet {
 
         if(CookieLoginServlet.login == true){
             login = true;
+            consumer_map = JDBC.User.get_userCar();
         }else {
             login = false;
         }
@@ -91,6 +91,7 @@ public class ShoppingServlet extends HttpServlet {
 
             case "findCar":
                 if (login == true) {
+                    System.out.println(consumer_map.values());
                     req.setAttribute("map", consumer_map.values());
                     req.getRequestDispatcher("Show/myCar.jsp").forward(req, resp);
                 }else {
