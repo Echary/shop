@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static JDBC.Product.addProduct;
+import static JDBC.Product.deleteProduct;
 
 @WebServlet("/commodity")
 public class ShoppingServlet extends HttpServlet {
@@ -63,8 +64,10 @@ public class ShoppingServlet extends HttpServlet {
                 String id = req.getParameter("id");
                 int amount = consumer_map.get(id).getAmount();
                 if (amount > 1){
+                    deleteProduct(id,amount);
                     consumer_map.get(id).setAmount(amount - 1);
                 }else{
+                    deleteProduct(id,0);
                     consumer_map.remove(id);
                 }
                 req.setAttribute("map", consumer_map.values());
@@ -73,6 +76,7 @@ public class ShoppingServlet extends HttpServlet {
 
             case "delete":
                 id = req.getParameter("id");
+                deleteProduct(id,0);
                 consumer_map.remove(id);
                 req.setAttribute("map", consumer_map.values());
                 req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
@@ -91,7 +95,6 @@ public class ShoppingServlet extends HttpServlet {
 
             case "findCar":
                 if (login == true) {
-                    System.out.println(consumer_map.values());
                     req.setAttribute("map", consumer_map.values());
                     req.getRequestDispatcher("Show/myCar.jsp").forward(req, resp);
                 }else {
@@ -101,6 +104,7 @@ public class ShoppingServlet extends HttpServlet {
 
             case "addAmount":
                 id = req.getParameter("id");
+                addProduct(id,consumer_map.get(id).getAmount());
                 consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
                 req.setAttribute("map", consumer_map.values());
                 req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
@@ -123,8 +127,8 @@ public class ShoppingServlet extends HttpServlet {
                         value2 = new Commodity(temp_id,name,price,type,1);
                         consumer_map.put(id,value2);
                         addProduct(value2);
-
                     }else {
+                        addProduct(id,consumer_map.get(id).getAmount());
                         consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
                     }
                     req.setAttribute("map", consumer_map.values());
