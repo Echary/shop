@@ -1,4 +1,4 @@
-<%@ page import="static Cookie.CookieLoginServlet.login" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Ederment
   Date: 2020-09-24

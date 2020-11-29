@@ -17,15 +17,6 @@
 
 <style>
 
-    td.temp{
-        border-right: 0px;
-        border-bottom: 0px;
-        background: #fff;
-        font-size:11px;
-        padding: 6px 6px 6px 12px;
-        color: #4f6b72;
-    }
-
     a.button2 {
         height: 30px;
         line-height: 30px;
@@ -138,7 +129,39 @@
 </style>
 
 <script language="JavaScript" type="text/javascript" class="ifr">
+    function check(){
+        <c:choose>
 
+        <c:when test="${not empty sessionScope.loginUser }">
+        check1()
+        </c:when>
+
+        <c:otherwise>
+        check2();
+        </c:otherwise>
+
+        </c:choose>
+    }
+
+    function checking(){
+        <c:set var="login" value="${login}"></c:set>
+
+        <c:choose>
+
+        <c:when test="${empty sessionScope.loginUser }">
+        check2();
+        </c:when>
+
+        </c:choose>
+    }
+
+    function check1(){
+        alert("添加成功")
+    }
+
+    function check2(){
+        alert("请登录!")
+    }
 </script>
 
 
@@ -171,15 +194,9 @@
 
                 <c:forEach items="${map2}" var="commodity">
                     <c:if test="${fn:indexOf(commodity.name,key) != -1 }">
-
-
-
                         <c:set var="flag" value="${flag + flag2}"></c:set>
-
                         <c:choose>
-
                             <c:when test="${flag%2 == 0}">
-
                                 <tr>
                                     <th scope="row" class="specalt">${commodity.id}</th>
                                     <td class="alt">${commodity.name}</td>
@@ -190,7 +207,6 @@
                                         <a href="commodity?method=add&id=${commodity.id}" class="button" onclick="return check()">加入购物车</a>
                                     </td>
                                 </tr>
-
                             </c:when>
                             <c:otherwise>
                                 <tr>
@@ -205,20 +221,15 @@
                                 </tr>
                             </c:otherwise>
                         </c:choose>
-
                     </c:if>
                 </c:forEach>
-
             </table>
-
             <br>
             <a href="/commodity" class="button2" style="width: 60px">返回</a>
             <a href="Show/select.jsp" class="button2">继续搜索</a>
-            <a href="/commodity?method=findCar" class="button2" style="width: 60px">购物车</a>
-
+            <a href="/commodity?method=findCar" class="button2" style="width: 60px" onclick="return checking()">购物车</a>
         </td>
     </tr>
-
 </table>
 
 </body>

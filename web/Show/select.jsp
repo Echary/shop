@@ -12,7 +12,6 @@
     <title>商品搜索</title>
 </head>
 <body>
-
 <style>
 
 
@@ -139,7 +138,6 @@
     html>body td{ font-size:15px;}
 
 </style>
-
 <table border=0 cellpadding=0 cellspacing=0 style="width:100% ;height:100%">
 
     <tr>
@@ -156,15 +154,16 @@
                     <form action="/commodity" method="get">
                             <tr>
                                 <th scope="row" class="specalt">
-                                    <input type="text" name="keySearch" class="button" style="width:450px;" placeholder="请输入商品名或关键字">
+                                    <input type="text" name="keySearch" style= "height:28px;width: 100%" class="button" style="width:450px;" placeholder="请输入商品名或关键字">
                                 </th>
 
 
                                 <input type="hidden" name="method" value="find" >
 
                                 <td class="alt">
-                                    <input type="submit" class="button" value="搜索">
+                                    <input type="submit" class="button" style= "height:28px" value="搜索">
                                 </td>
+
                             </tr>
                     </form>
 
@@ -176,6 +175,5 @@
     </tr>
 
 </table>
-
 </body>
 </html>

@@ -5,15 +5,13 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static servlet.ShoppingServlet.consumer_map;
-import static servlet.ShoppingServlet.logOut;
-
 
 public class Product {
 
     static private Map<String, Commodity> map = new HashMap<>();
     static private entity.User user;
 
+    //获得所有产品
     public static Map<String, Commodity> get_commodity(){
         try {
             Connection connection = Pool.create();
@@ -35,10 +33,12 @@ public class Product {
         return map;
     }
 
+    //获得用户信息
     public static void getUser(){
         user = User.getUser();
     }
 
+    //添加产品
     public static void addProduct(Commodity commodity) {
         if (user == null) getUser();
         try {
@@ -62,10 +62,7 @@ public class Product {
     }
 
 
-    public static void getProduct(){
-
-    }
-
+    //修改产品
     public static void updateProduct(String id, int amount){
         if (user == null) getUser();
         try {
@@ -81,6 +78,7 @@ public class Product {
         }
     }
 
+    //删除产品
     public static void deleteProduct(String id, int amount){
         amount--;
         if (amount > 0) {
@@ -99,7 +97,7 @@ public class Product {
         }
     }
 
-    public static Map<String, Commodity> searchProduct(String ID){
+    /*public static Map<String, Commodity> searchProduct(String ID){
         try {
             Connection connection = Pool.create();
 
@@ -120,6 +118,20 @@ public class Product {
             e.printStackTrace();
         }
         return map;
+    }*/
+
+    //清空购物车
+    public static void clean(){
+        if (user == null) getUser();
+        try {
+            Connection connection = Pool.create();
+            String sql = "TRUNCATE TABLE " + user.getCar();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

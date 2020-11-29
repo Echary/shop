@@ -14,9 +14,11 @@
 <table>
     <tr>
         <td>
-            <font size="5">注册成功</font>
-            out.println("页面将在3秒后进行跳转......");
-            response.setHeader("refresh","3;URL=/commodity");
+            <%
+                out.write("注册成功！");
+                out.println("页面将在3秒后进行跳转......");
+                response.setHeader("refresh","3;URL=/commodity");
+            %>
         </td>
 </table>
 </body>

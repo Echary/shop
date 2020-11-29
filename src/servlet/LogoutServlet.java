@@ -1,24 +1,22 @@
-package Cookie;
+package servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
-import static Cookie.CookieLoginServlet.login;
+import static servlet.LoginServlet.login;
 
 @WebServlet("/cookieLogout")
-public class CookieLogoutServlet extends HttpServlet {
+public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Cookie[] cookies = req.getCookies();
         for (Cookie cookie:cookies){
             if (cookie.getName().equals("name")){
                 login = false;
-                servlet.ShoppingServlet.logOut();
+                JDBC.User.logOut();
                 cookie.setMaxAge(0);
+                req.getSession().removeAttribute("loginUser");
                 resp.addCookie(cookie);
                 resp.sendRedirect("/Login/cookie_logout.jsp");
             }

@@ -150,11 +150,9 @@
 <script language="JavaScript" type="text/javascript" class="ifr">
 
     function check(){
-        <c:set var="login" value="${login}"></c:set>
-
         <c:choose>
 
-        <c:when test="${login eq'login'}">
+        <c:when test="${not empty sessionScope.loginUser }">
         check1()
         </c:when>
 
@@ -170,12 +168,9 @@
 
         <c:choose>
 
-        <c:when test="${login eq'login'}">
-        </c:when>
-
-        <c:otherwise>
+        <c:when test="${empty sessionScope.loginUser }">
         check2();
-        </c:otherwise>
+        </c:when>
 
         </c:choose>
     }
@@ -188,18 +183,11 @@
         alert("请登录!")
     }
 
-
-
-
 </script>
 
 <table border=0 cellpadding=0 cellspacing=0 style="width:100% ;height:100%">
-
     <tr>
-
         <td style="width:100%;" align="center" valign="middle"  >
-
-
             <table id="mytable" cellspacing="0" width="50%" weight="50%">
                 <tr>
                     <th colspan="6" class="nobg" >商品列表</th>
@@ -212,17 +200,11 @@
                     <th scope="col" >商品类别</th>
                     <th scope="col" >操作</th>
                 </tr>
-
                 <c:set var="flag" value="1"></c:set>
                 <c:set var="flag2" value="1"></c:set>
-
-
                 <c:forEach items="${map2}" var="commodity">
-
                     <c:set var="flag" value="${flag + flag2}"></c:set>
-
                     <c:choose>
-
                         <c:when test="${flag%2 == 0}">
                             <tr>
                                 <th scope="row" class="specalt">${commodity.id}</th>
@@ -247,43 +229,27 @@
                                 </td>
                             </tr>
                         </c:otherwise>
-
                     </c:choose>
-
                 </c:forEach>
             </table>
             <br>
-
             <table class="temp">
-
-
                 <c:set var="login" value="${login}"></c:set>
                 <c:choose>
-                <c:when test="${login eq'login'}">
-
+                    <c:when test="${not empty sessionScope.loginUser }">
                     <a href="/cookieLogout" class="button2">退出登录</a>
-
-                </c:when>
+                    </c:when>
                 <c:otherwise>
                     <form name='login' action='cookieLogin' method='post'>
                         <a href='javascript:document.login.submit();' class="button2" style="width: 60px">登录</a>
                     </form>
-
-                   <%-- <a href="/cookieLogin" class="button2" style="width: 60px">登录</a>--%>
                 </c:otherwise>
                 </c:choose>
-
-
                 <a href="Show/select.jsp" class="button2">搜索商品</a>
-
                 <a href="commodity?method=findCar" class="button2" style="width: 60px" onclick="return checking()">购物车</a>
-
             </table>
-
         </td>
     </tr>
-
 </table>
-
 </body>
 </html>

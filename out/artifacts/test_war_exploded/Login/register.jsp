@@ -6,12 +6,30 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
-<form action="regDo">
+
+<script language="JavaScript" type="text/javascript">
+    <c:set var = "exist" value = "${exist}"></c:set>
+
+    <c:choose>
+
+    <c:when test="${not empty exist}">
+    check1();
+    </c:when>
+
+    </c:choose>
+
+    function check1(){
+        alert("用户已存在!")
+    }
+</script>
+
+<form action="/register" method="post">
     <table>
     <tr>
         <td>
@@ -60,7 +78,7 @@
     </tr>
     <tr>
         <td>
-            <input type="button" value="注册" onclick="javascript:location.href='regDo.jsp'">
+            <input type="submit" value="注册">
         </td>
     </tr>
     </table>

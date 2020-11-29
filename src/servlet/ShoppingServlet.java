@@ -1,6 +1,5 @@
 package servlet;
 
-import Cookie.CookieLoginServlet;
 import JDBC.Product;
 import entity.Commodity;
 import javax.servlet.ServletException;
@@ -13,8 +12,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import static JDBC.Product.addProduct;
-import static JDBC.Product.deleteProduct;
+import static JDBC.Product.*;
 
 @WebServlet("/commodity")
 public class ShoppingServlet extends HttpServlet {
@@ -46,7 +44,7 @@ public class ShoppingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        if(CookieLoginServlet.login == true){
+        if(req.getSession().getAttribute("loginUser") != null){
             login = true;
             consumer_map = JDBC.User.get_userCar();
         }else {
@@ -83,12 +81,6 @@ public class ShoppingServlet extends HttpServlet {
                 break;
 
             case "findAll":
-                if(login == true) {
-                    req.setAttribute("login","login");
-
-                }else {
-                    req.setAttribute("login","no");
-                }
                 req.setAttribute("map2", commodity_map.values());
                 req.getRequestDispatcher("Show/market.jsp").forward(req,resp);
                 break;
@@ -139,6 +131,7 @@ public class ShoppingServlet extends HttpServlet {
                 break;
 
             case "clean":
+                clean();
                 consumer_map.clear();
                 resp.sendRedirect("/commodity");
                 break;
@@ -152,7 +145,4 @@ public class ShoppingServlet extends HttpServlet {
         }
     }
 
-    public static void logOut(){
-        consumer_map.clear();
-    }
 }
