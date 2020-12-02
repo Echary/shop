@@ -1,6 +1,7 @@
 package servlet;
 
-import JDBC.Product;
+
+import Dao.*;
 import entity.Commodity;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,17 +13,22 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import static JDBC.Product.*;
-
 @WebServlet("/commodity")
 public class ShoppingServlet extends HttpServlet {
 
     static public Map<String, Commodity> consumer_map;
     static private Map<String, Commodity> commodity_map;
     static private boolean login = false;
+    static productDao productDao = new productDaoImpl();
+    static userDao userDao = new userDaoImpl();
 
     static {
-        commodity_map = Product.get_commodity();
+        try {
+            commodity_map = productDao.get_commodity();
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -42,11 +48,15 @@ public class ShoppingServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 
         if(req.getSession().getAttribute("loginUser") != null){
             login = true;
-            consumer_map = JDBC.User.get_userCar();
+            try {
+                consumer_map = userDao.get_userCar();
+            } catch (DaoException e) {
+                e.printStackTrace();
+            }
         }else {
             login = false;
         }
@@ -57,91 +67,95 @@ public class ShoppingServlet extends HttpServlet {
             method = "findAll";
         }
 
-        switch (method){
-            case "reduce":
-                String id = req.getParameter("id");
-                int amount = consumer_map.get(id).getAmount();
-                if (amount > 1){
-                    deleteProduct(id,amount);
-                    consumer_map.get(id).setAmount(amount - 1);
-                }else{
-                    deleteProduct(id,0);
-                    consumer_map.remove(id);
-                }
-                req.setAttribute("map", consumer_map.values());
-                req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
-                break;
-
-            case "delete":
-                id = req.getParameter("id");
-                deleteProduct(id,0);
-                consumer_map.remove(id);
-                req.setAttribute("map", consumer_map.values());
-                req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
-                break;
-
-            case "findAll":
-                req.setAttribute("map2", commodity_map.values());
-                req.getRequestDispatcher("Show/market.jsp").forward(req,resp);
-                break;
-
-            case "findCar":
-                if (login == true) {
-                    req.setAttribute("map", consumer_map.values());
-                    req.getRequestDispatcher("Show/myCar.jsp").forward(req, resp);
-                }else {
-                    resp.sendRedirect("Login/cookie_login.jsp");
-                }
-                break;
-
-            case "addAmount":
-                id = req.getParameter("id");
-                addProduct(id,consumer_map.get(id).getAmount());
-                consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
-                req.setAttribute("map", consumer_map.values());
-                req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
-                break;
-
-            case "add":
-                if (login == true){
-                    id = req.getParameter("id");
-                    Set<Map.Entry<String, Commodity>> temp = commodity_map.entrySet();
-                    Iterator<Map.Entry<String, Commodity>> solve = temp.iterator();
-                    Set<Map.Entry<String, Commodity>> temp2 = consumer_map.entrySet();
-                    Iterator<Map.Entry<String, Commodity>> solve2 = temp2.iterator();
-                    Commodity value2;
-                    if (consumer_map.get(id)==null){
-                        Commodity value = commodity_map.get(id);
-                        String temp_id = value.getId();
-                        String name = value.getName();
-                        double price = value.getPrice();
-                        String type = value.getType();
-                        value2 = new Commodity(temp_id,name,price,type,1);
-                        consumer_map.put(id,value2);
-                        addProduct(value2);
-                    }else {
-                        addProduct(id,consumer_map.get(id).getAmount());
-                        consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
+        try {
+            switch (method){
+                    case "reduce":
+                    String id = req.getParameter("id");
+                    int amount = consumer_map.get(id).getAmount();
+                    if (amount > 1){
+                        productDao.deleteProduct(id,amount);
+                        consumer_map.get(id).setAmount(amount - 1);
+                    }else{
+                        productDao.deleteProduct(id,0);
+                        consumer_map.remove(id);
                     }
                     req.setAttribute("map", consumer_map.values());
+                    req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
+                    break;
+
+                case "delete":
+                    id = req.getParameter("id");
+                    productDao.deleteProduct(id,0);
+                    consumer_map.remove(id);
+                    req.setAttribute("map", consumer_map.values());
+                    req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
+                    break;
+
+                case "findAll":
+                    req.setAttribute("map2", commodity_map.values());
+                    req.getRequestDispatcher("Show/market.jsp").forward(req,resp);
+                    break;
+
+                case "findCar":
+                    if (login == true) {
+                        req.setAttribute("map", consumer_map.values());
+                        req.getRequestDispatcher("Show/myCar.jsp").forward(req, resp);
+                    }else {
+                        resp.sendRedirect("Login/cookie_login.jsp");
+                    }
+                    break;
+
+                case "addAmount":
+                    id = req.getParameter("id");
+                    productDao.addProduct(id,consumer_map.get(id).getAmount());
+                    consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
+                    req.setAttribute("map", consumer_map.values());
+                    req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
+                    break;
+
+                case "add":
+                    if (login == true){
+                        id = req.getParameter("id");
+                        Set<Map.Entry<String, Commodity>> temp = commodity_map.entrySet();
+                        Iterator<Map.Entry<String, Commodity>> solve = temp.iterator();
+                        Set<Map.Entry<String, Commodity>> temp2 = consumer_map.entrySet();
+                        Iterator<Map.Entry<String, Commodity>> solve2 = temp2.iterator();
+                        Commodity value2;
+                        if (consumer_map.get(id)==null){
+                            Commodity value = commodity_map.get(id);
+                            String temp_id = value.getId();
+                            String name = value.getName();
+                            double price = value.getPrice();
+                            String type = value.getType();
+                            value2 = new Commodity(temp_id,name,price,type,1);
+                            consumer_map.put(id,value2);
+                            productDao.addProduct(value2);
+                        }else {
+                            productDao.addProduct(id,consumer_map.get(id).getAmount());
+                            consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
+                        }
+                        req.setAttribute("map", consumer_map.values());
+                        resp.sendRedirect("/commodity");
+                    }else {
+                        resp.sendRedirect("Login/cookie_login.jsp");
+                    }
+                    break;
+
+                case "clean":
+                    productDao.clean();
+                    consumer_map.clear();
                     resp.sendRedirect("/commodity");
-                }else {
-                    resp.sendRedirect("Login/cookie_login.jsp");
-                }
-                break;
+                    break;
 
-            case "clean":
-                clean();
-                consumer_map.clear();
-                resp.sendRedirect("/commodity");
-                break;
-
-            case "find":
-                req.setAttribute("map2", commodity_map.values());
-                String keySearch = req.getParameter("keySearch");
-                req.setAttribute("keySearch",keySearch);
-                req.getRequestDispatcher("Show/finding.jsp").forward(req,resp);
-                break;
+                case "find":
+                    req.setAttribute("map2", commodity_map.values());
+                    String keySearch = req.getParameter("keySearch");
+                    req.setAttribute("keySearch",keySearch);
+                    req.getRequestDispatcher("Show/finding.jsp").forward(req,resp);
+                    break;
+            }
+        } catch (DaoException e) {
+            e.printStackTrace();
         }
     }
 

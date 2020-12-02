@@ -17,15 +17,6 @@
 
 <style>
 
-    td.temp{
-        border-right: 0px;
-        border-bottom: 0px;
-        background: #fff;
-        font-size:11px;
-        padding: 6px 6px 6px 12px;
-        color: #4f6b72;
-    }
-
     a.button2 {
         height: 30px;
         line-height: 30px;

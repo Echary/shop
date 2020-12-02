@@ -1,21 +1,23 @@
-package JDBC;
+package Dao;
 
 import entity.Commodity;
+
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 import static servlet.ShoppingServlet.consumer_map;
 
-public class User {
+public class userDaoImpl implements userDao {
 
     static private String name;
     static private Map<String, Commodity> map2 = new HashMap<>();
 
     //登录检测
-    public static boolean check(String user_name, String user_password){
+    public boolean check(String user_name, String user_password) throws DaoException{
         boolean check = false;
         try {
-            Connection connection = Pool.create();
+            Connection connection = null;
+                connection = Dao.create();
             String sql = "select * from consumer where name = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1,user_name);
@@ -30,6 +32,8 @@ public class User {
                     }
                 }
             }
+            connection.close();
+            pstmt.close();
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -37,7 +41,7 @@ public class User {
     }
 
     //用户信息获取
-    public static entity.User getUser(){
+    public entity.User getUser() throws DaoException{
 
         String userID = null;
         String password = null;
@@ -47,7 +51,7 @@ public class User {
         entity.User user;
 
         try {
-            Connection connection = Pool.create();
+            Connection connection = Dao.create();
             String sql = "select * from consumer where name = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1,name);
@@ -60,6 +64,8 @@ public class User {
                 sex = resultSet.getInt("sex");
                 car = resultSet.getString("car");
             }
+            connection.close();
+            pstmt.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -70,10 +76,10 @@ public class User {
     }
 
     //用户购物车获取
-    public static Map<String, Commodity> get_userCar(){
+    public Map<String, Commodity> get_userCar() throws DaoException{
         entity.User user = getUser();
         try {
-            Connection connection = Pool.create();
+            Connection connection = Dao.create();
             String sql = "select * from " + user.getCar();
             PreparedStatement pstmt = connection.prepareStatement(sql);
             ResultSet  resultSet = pstmt.executeQuery();
@@ -86,15 +92,16 @@ public class User {
                 map2.put(id,new Commodity(id,name,price,type,amount));
             }
             connection.close();
+            pstmt.close();
         } catch (SQLException e){
             e.printStackTrace();
         }return map2;
     }
 
     //新建用户
-    public static void newUser(String userId, String name, String password, int age, int sex, String car, String date){
+    public void newUser(String userId, String name, String password, int age, int sex, String car, String date) throws DaoException{
         try {
-            Connection connection = Pool.create();
+            Connection connection = Dao.create();
             String sql = "INSERT INTO consumer (User_id,name,password,age,sex,car,date) VALUES(?,?,?,?,?,?,?)";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, userId);
@@ -106,31 +113,34 @@ public class User {
             pstmt.setString(7,date);
             pstmt.executeUpdate();
             connection.close();
+            pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     //获取当前用户数目
-    public static int getMax(){
+    public int getMax() throws DaoException{
         int max = 0;
         try {
-            Connection connection = Pool.create();
+            Connection connection = Dao.create();
             String sql = "SELECT COUNT(*) FROM consumer";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             ResultSet  resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
                 max = resultSet.getInt(1);
             }
+            connection.close();
+            pstmt.close();
         } catch (SQLException e){
             e.printStackTrace();
         }return max;
     }
 
     //用户建表
-    public static void newTable(String car){
+    public void newTable(String car) throws DaoException{
         try {
-            Connection connection = Pool.create();
+            Connection connection = Dao.create();
             String sql = "CREATE TABLE `shop`.`" + car + "`  (\n" +
                     "  `product_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,\n" +
                     "  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,\n" +
@@ -142,16 +152,17 @@ public class User {
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.executeUpdate();
             connection.close();
+            pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     //判断用户是否存在
-    public static boolean exist(String user_name){
+    public boolean exist(String user_name) throws DaoException{
         boolean check = false;
         try {
-            Connection connection = Pool.create();
+            Connection connection = Dao.create();
             String sql = "select * from consumer where name = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1,user_name);
@@ -163,6 +174,8 @@ public class User {
                     }
                 }
             }
+            connection.close();
+            pstmt.close();
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -170,11 +183,12 @@ public class User {
     }
 
     //用户登出
-    public static void logOut(){
+    public void logOut() throws DaoException{
         consumer_map.clear();
     }
 
 }
+
 
 
 

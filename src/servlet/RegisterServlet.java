@@ -1,5 +1,7 @@
 package servlet;
 
+import Dao.*;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,40 +16,46 @@ import java.util.Date;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
+
+    static productDao productDao = new productDaoImpl();
+    static userDao userDao = new userDaoImpl();
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
         try {
-            req.setCharacterEncoding("utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        String userName = req.getParameter("userName");
-
-        if (JDBC.User.exist(userName) == false) {
-            String password = req.getParameter("password");
-            int age = Integer.parseInt(req.getParameter("age"));
-            String sexStr = req.getParameter("sex");
-            int sex;
-            if (sexStr.equals("ÄÐ")) {
-                sex = 0;
-            } else {
-                sex = 1;
+            try {
+                req.setCharacterEncoding("utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
-            SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-            String date = df.format(new Date());
-            int max = JDBC.User.getMax();
-            Format number = new DecimalFormat("0000");
-            String id = number.format(max + 1);
-            String car = "car" + id + userName;
-            JDBC.User.newUser(id, userName, password, age, sex, car, date);
-            JDBC.User.newTable(car);
-            resp.sendRedirect("Login/regDo.jsp");
-        }else {
-            req.setAttribute("exist", 1);
-            req.getRequestDispatcher("Login/register.jsp").forward(req, resp);
+
+            String userName = req.getParameter("userName");
+
+            if (userDao.exist(userName) == false) {
+                String password = req.getParameter("password");
+                int age = Integer.parseInt(req.getParameter("age"));
+                String sexStr = req.getParameter("sex");
+                int sex;
+                if (sexStr.equals("ÄÐ")) {
+                    sex = 0;
+                } else {
+                    sex = 1;
+                }
+                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+                String date = df.format(new Date());
+                int max = userDao.getMax();
+                Format number = new DecimalFormat("0000");
+                String id = number.format(max + 1);
+                String car = "car" + id + userName;
+                userDao.newUser(id, userName, password, age, sex, car, date);
+                userDao.newTable(car);
+                resp.sendRedirect("Login/regDo.jsp");
+            }else {
+                req.setAttribute("exist", 1);
+                req.getRequestDispatcher("Login/register.jsp").forward(req, resp);
+            }
+        } catch (DaoException e) {
+            e.printStackTrace();
         }
     }
 }

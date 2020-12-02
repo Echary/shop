@@ -1,20 +1,24 @@
-package JDBC;
+package Dao;
 
 import entity.Commodity;
+
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class Product {
+public class productDaoImpl implements productDao {
 
     static private Map<String, Commodity> map = new HashMap<>();
     static private entity.User user;
+    static productDao productDao = new productDaoImpl();
+    static userDao userDao = new userDaoImpl();
 
     //获得所有产品
-    public static Map<String, Commodity> get_commodity(){
+    public Map<String, Commodity> get_commodity() {
         try {
-            Connection connection = Pool.create();
+            Connection connection = null;
+            connection = Dao.create();
             String sql = "select * from commodity";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             ResultSet  resultSet = pstmt.executeQuery();
@@ -26,6 +30,7 @@ public class Product {
                 String type = resultSet.getString("type");
                 map.put(id,new Commodity(id,name,price,stock,type));
             }
+            pstmt.close();
             connection.close();
         } catch (SQLException e){
             e.printStackTrace();
@@ -34,15 +39,15 @@ public class Product {
     }
 
     //获得用户信息
-    public static void getUser(){
-        user = User.getUser();
+    public void getUser() throws DaoException {
+        user = userDao.getUser();
     }
 
     //添加产品
-    public static void addProduct(Commodity commodity) {
+    public void addProduct(Commodity commodity) throws DaoException {
         if (user == null) getUser();
         try {
-            Connection connection = Pool.create();
+            Connection connection = Dao.create();
             String sql = "INSERT INTO " + user.getCar() + "(product_id,name,price,type,amount) VALUES(?,?,?,?,?)";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, commodity.getId());
@@ -51,27 +56,31 @@ public class Product {
             pstmt.setString(4, commodity.getType());
             pstmt.setInt(5, commodity.getAmount());
             pstmt.executeUpdate();
+            pstmt.close();
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public static void addProduct(String id,int amount){
-        if (user == null) getUser();
+    public void addProduct(String id, int amount) throws DaoException {
+        if (user == null) {
+            getUser();
+            System.out.println("1");
+        }
         updateProduct(id,amount+1);
     }
 
-
     //修改产品
-    public static void updateProduct(String id, int amount){
+    public void updateProduct(String id, int amount) throws DaoException {
         if (user == null) getUser();
         try {
-            Connection connection = Pool.create();
+            Connection connection = Dao.create();
             String sql = "UPDATE " + user.getCar() + " SET amount = ? WHERE product_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, amount);
             pstmt.setString(2, id);
             pstmt.executeUpdate();
+            pstmt.close();
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,17 +88,18 @@ public class Product {
     }
 
     //删除产品
-    public static void deleteProduct(String id, int amount){
+    public void deleteProduct(String id, int amount) throws DaoException {
         amount--;
         if (amount > 0) {
             updateProduct(id,amount);
         }else {
             try {
-                Connection connection = Pool.create();
+                Connection connection = Dao.create();
                 String sql = "DELETE FROM " + user.getCar() + " WHERE product_id = ?";
                 PreparedStatement pstmt = connection.prepareStatement(sql);
                 pstmt.setString(1, id);
                 pstmt.executeUpdate();
+                pstmt.close();
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -97,37 +107,15 @@ public class Product {
         }
     }
 
-    /*public static Map<String, Commodity> searchProduct(String ID){
-        try {
-            Connection connection = Pool.create();
-
-            String sql = "select * from commodity where commodity_id =?";
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1,ID);
-            ResultSet  resultSet = pstmt.executeQuery();
-            while (resultSet.next()) {
-                String id = resultSet.getString("commodity_id");
-                String name = resultSet.getString("name");
-                double price = resultSet.getDouble("price");
-                int stock = resultSet.getInt("stock");
-                String type = resultSet.getString("type");
-                map.put(id,new Commodity(id,name,price,stock,type));
-            }
-            connection.close();
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        return map;
-    }*/
-
     //清空购物车
-    public static void clean(){
+    public void clean() throws DaoException {
         if (user == null) getUser();
         try {
-            Connection connection = Pool.create();
+            Connection connection = Dao.create();
             String sql = "TRUNCATE TABLE " + user.getCar();
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.executeUpdate();
+            pstmt.close();
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
