@@ -191,7 +191,6 @@
                 <c:set var="flag2" value="1"></c:set>
                 <c:set var="key" value="${keySearch}"></c:set>
 
-
                 <c:forEach items="${map2}" var="commodity">
                     <c:if test="${fn:indexOf(commodity.name,key) != -1 }">
                         <c:set var="flag" value="${flag + flag2}"></c:set>
@@ -223,6 +222,7 @@
                         </c:choose>
                     </c:if>
                 </c:forEach>
+
             </table>
             <br>
             <a href="/commodity" class="button2" style="width: 60px">返回</a>

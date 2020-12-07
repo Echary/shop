@@ -10,9 +10,9 @@ import java.util.Map;
 public class productDaoImpl implements productDao {
 
     static private Map<String, Commodity> map = new HashMap<>();
-    static private entity.User user;
     static productDao productDao = new productDaoImpl();
     static userDao userDao = new userDaoImpl();
+    static private entity.User user;
 
     //获得所有产品
     public Map<String, Commodity> get_commodity() {
@@ -45,7 +45,6 @@ public class productDaoImpl implements productDao {
 
     //添加产品
     public void addProduct(Commodity commodity) throws DaoException {
-        if (user == null) getUser();
         try {
             Connection connection = Dao.create();
             String sql = "INSERT INTO " + user.getCar() + "(product_id,name,price,type,amount) VALUES(?,?,?,?,?)";
@@ -63,16 +62,11 @@ public class productDaoImpl implements productDao {
         }
     }
     public void addProduct(String id, int amount) throws DaoException {
-        if (user == null) {
-            getUser();
-            System.out.println("1");
-        }
         updateProduct(id,amount+1);
     }
 
     //修改产品
     public void updateProduct(String id, int amount) throws DaoException {
-        if (user == null) getUser();
         try {
             Connection connection = Dao.create();
             String sql = "UPDATE " + user.getCar() + " SET amount = ? WHERE product_id = ?";
@@ -109,7 +103,6 @@ public class productDaoImpl implements productDao {
 
     //清空购物车
     public void clean() throws DaoException {
-        if (user == null) getUser();
         try {
             Connection connection = Dao.create();
             String sql = "TRUNCATE TABLE " + user.getCar();

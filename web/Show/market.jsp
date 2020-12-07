@@ -164,7 +164,6 @@
     }
 
     function checking(){
-        <c:set var="login" value="${login}"></c:set>
 
         <c:choose>
 
@@ -176,7 +175,7 @@
     }
 
     function check1(){
-        alert("添加成功")
+        alert("添加成功!")
     }
 
     function check2(){
@@ -234,7 +233,6 @@
             </table>
             <br>
             <table class="temp">
-                <c:set var="login" value="${login}"></c:set>
                 <c:choose>
                     <c:when test="${not empty sessionScope.loginUser }">
                     <a href="/cookieLogout" class="button2">退出登录</a>

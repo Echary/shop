@@ -6,6 +6,7 @@ import java.util.Map;
 
 public interface userDao extends Dao{
 
+    //登录判断
     public boolean check(String user_name, String user_password) throws DaoException;
 
     //用户信息获取
@@ -16,7 +17,6 @@ public interface userDao extends Dao{
 
     //新建用户
     public void newUser(String userId, String name, String password, int age, int sex, String car, String date) throws DaoException;
-
 
     //获取当前用户数目
     public int getMax() throws DaoException;

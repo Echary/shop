@@ -9,6 +9,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="total" uri="http://total.com" %>
 <html>
   <head>
     <title>我的购物车</title>
@@ -163,11 +164,11 @@ function check2(){
         var cof = window.confirm("确认结算吗?");
         if (cof == true){
             alert("结算成功!")
-            addNum()
+            list()
         }
     }
 
-function addNum(){
+function list(){
     window.location.href="commodity?method=clean";
 }
 
@@ -212,7 +213,6 @@ function addNum(){
                                   <td class="alt">${map.name}</td>
                                   <td class="alt">${map.type}</td>
                                   <td class="alt">${map.price}</td>
-                                  <c:set var="total" value="${total + map.price * map.amount}"></c:set>
                                   <td class="alt">
                                       <a href="commodity?method=reduce&id=${map.id}" class="button">-</a>
                                           ${map.amount}
@@ -233,7 +233,6 @@ function addNum(){
                                   <td scope="col">${map.name}</td>
                                   <td scope="col">${map.type}</td>
                                   <td scope="col">${map.price}</td>
-                                  <c:set var="total" value="${total + map.price * map.amount}"></c:set>
                                   <td scope="col">
                                       <a type="button" href="commodity?method=reduce&id=${map.id}" class="button">-</a>
                                           ${map.amount}
@@ -252,12 +251,12 @@ function addNum(){
 
                   </c:forEach>
                   <tr>
-                      <th class="nobg" colspan="7">总价:${total}</th>
+                      <total:consumer/>
+                      <%--<th class="nobg" colspan="7">总价:${total}</th>--%>
                   </tr>
 
               </table>
           <br>
-
               <a href="/commodity" class="button2">返回</a>
               <a href="/commodity?method=clean" class="button2">清空</a>
               <a class="button2" onclick="return Check()">结算</a>
