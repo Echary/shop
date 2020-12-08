@@ -14,6 +14,8 @@
 <body>
 
 <script language="JavaScript" type="text/javascript">
+
+
     <c:set var = "exist" value = "${exist}"></c:set>
 
     <c:choose>
@@ -26,6 +28,7 @@
 
     function check1(){
         alert("用户已存在!")
+        history.back();
     }
 </script>
 
@@ -36,8 +39,9 @@
             用户名：
         </td>
         <td>
-        <input type="text" name="userName"/>
+        <input type="text" name="userName" id="userName"/><span id="msg"></span>
         </td>
+
     </tr>
     <tr>
         <td>
@@ -84,4 +88,44 @@
     </table>
 </form>
 </body>
+<script>
+    window.onload=function(){
+        //1.获取要判断的文本框
+        var nameElenment  = document.getElementById("userName");
+
+        //2.绑定失去焦点事件
+        nameElenment.onblur=function(){
+            //3.获取用户输入的值
+            var username = this.value;
+
+            //4.获取XMLHttprequset
+            var xhr =new XMLHttpRequest();
+
+            //5.编写回调函数
+
+            xhr.onreadystatechange=function(){
+                //判断是否一切正常
+                if(xhr.readyState==4){
+                    if(xhr.status==200){
+                        var msg = document.getElementById("msg");
+                        if(xhr.responseText==1){
+                            msg.innerHTML="<font color='red' size='2'> <b> 用户名已存在</b> </font>"
+                        }
+                        else if(xhr.responseText==2){
+                            msg.innerHTML="<font color='green'>  ✔</font>"
+                        }
+                        else if(xhr.responseText==0){
+                            msg.innerHTML="<font></font>"
+                        }
+                    }
+                }
+            }
+            xhr.open("GET","${pageContext.request.contextPath}/Check_username?username="+username);
+
+            xhr.send();
+        }
+
+    }
+
+</script>
 </html>

@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="number" uri="http://number.com" %>
 <html>
 <head>
     <title>商品搜索</title>
@@ -139,7 +140,7 @@
 
 </style>
 <table border=0 cellpadding=0 cellspacing=0 style="width:100% ;height:100%">
-
+<number:count/>
     <tr>
 
         <td style="width:100%;" align="center" valign="middle"  >

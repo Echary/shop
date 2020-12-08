@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="number" uri="http://number.com" %>
 <html>
 <head>
     <title>商品列表</title>
@@ -131,17 +132,15 @@
 
 </style>
 
-
-
 <table border=0 cellpadding=0 cellspacing=0 style="width:100% ;height:100%">
-
+<number:count/>
     <tr>
 
         <td style="width:100%;" align="center" valign="middle"  >
 
 
             <table id="mytable" cellspacing="0" width="50%" weight="50%">
-                <form action="/cookieLogin" method="post">        <!--向服务器发出post请求-->
+                <form action="/cookieLogin" method="get">        <!--向服务器发出post请求-->
                     <table>
 
                         <tr>

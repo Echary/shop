@@ -17,13 +17,7 @@ public class LoginServlet extends HttpServlet {
     static userDao userDao = new userDaoImpl();
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        try {
-            req.setCharacterEncoding("utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String username = req.getParameter("username");
         String password =  req.getParameter("password");
@@ -36,12 +30,18 @@ public class LoginServlet extends HttpServlet {
             Cookie cookie = new Cookie("name",username);
             HttpSession session = req.getSession();
             session.setAttribute("loginUser", username);
-            session.setMaxInactiveInterval(60*60*24*7);
             resp.addCookie(cookie);
             login = true;
             resp.sendRedirect("Login/cookie_welcome.jsp");
         }else {
-            resp.sendRedirect("Login/cookie_login.jsp");
+            resp.setContentType("text/html; charset=UTF-8"); //转码
+            PrintWriter out = resp.getWriter();
+            out.flush();
+            out.println("<script>");
+            out.println("alert('用户名或密码错误!');");
+            out.println("history.back();");
+            out.println("</script>");
+            /*resp.sendRedirect("Login/cookie_login.jsp");*/
         }
     }
 }

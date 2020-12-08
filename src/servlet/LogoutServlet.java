@@ -24,7 +24,8 @@ public class LogoutServlet extends HttpServlet {
                 } catch (DaoException e) {
                     e.printStackTrace();
                 }
-                cookie.setMaxAge(0);
+                cookie.setMaxAge(0);/*
+                req.getSession().invalidate();*/
                 req.getSession().removeAttribute("loginUser");
                 resp.addCookie(cookie);
                 resp.sendRedirect("/Login/cookie_logout.jsp");

@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="number" uri="http://number.com" %>
 <html>
 <head>
     <title>商品列表</title>
@@ -185,6 +186,7 @@
 </script>
 
 <table border=0 cellpadding=0 cellspacing=0 style="width:100% ;height:100%">
+    <number:count/>
     <tr>
         <td style="width:100%;" align="center" valign="middle"  >
             <table id="mytable" cellspacing="0" width="50%" weight="50%">
@@ -238,9 +240,10 @@
                     <a href="/cookieLogout" class="button2">退出登录</a>
                     </c:when>
                 <c:otherwise>
-                    <form name='login' action='cookieLogin' method='post'>
+                    <%--<form name='login' action='/cookieLogin' method='post'>
                         <a href='javascript:document.login.submit();' class="button2" style="width: 60px">登录</a>
-                    </form>
+                    </form>--%>
+                    <a href="Login/cookie_login.jsp" class="button2" style="width: 60px">登录</a>
                 </c:otherwise>
                 </c:choose>
                 <a href="Show/select.jsp" class="button2">搜索商品</a>
