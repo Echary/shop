@@ -13,9 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * 判断用户名是否重复
- */
 @WebServlet("/Check_username")
 public class userCheck extends HttpServlet {
     private static final long serialVersionUID = 1L;

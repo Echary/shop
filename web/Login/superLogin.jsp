@@ -133,23 +133,23 @@
 </style>
 
 <table border=0 cellpadding=0 cellspacing=0 style="width:100% ;height:100%">
-<number:count/>
+    <number:count/>
     <tr>
 
         <td style="width:100%;" align="center" valign="middle"  >
 
 
             <table id="mytable" cellspacing="0" width="50%" weight="50%">
-                <form action="/cookieLogin" method="get">        <!--向服务器发出post请求-->
+                <form action="/superLogin" method="get">        <!--向服务器发出post请求-->
                     <table>
 
                         <tr>
                             <th scope="col">
-                                用户名:
+                                管理员:
                             </th>
 
                             <td class="nobg">
-                                <input type="text" name="username" />
+                                <input type="text" name="superName" />
                             </td>
                         </tr>
 
@@ -159,7 +159,7 @@
                             </th>
 
                             <td class="nobg">
-                                <input type="password" name="password"/>
+                                <input type="password" name="superPassword"/>
                             </td>
                         </tr>
 
@@ -168,11 +168,6 @@
                         <tr>
                             <td class="ifr" colspan="2">
                                 <input type="submit" style="width:50px" value="登录" class="button2">
-                                <input type="button" style="width:50px" value="注册" onclick="javascript:location.href='register.jsp'" class="button2">
-                                <br>
-                                <br>
-
-                                <a href="/Login/superLogin.jsp">管理员登录</a>
                             </td>
 
 

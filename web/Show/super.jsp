@@ -152,7 +152,7 @@
     function check(){
         <c:choose>
 
-        <c:when test="${not empty sessionScope.loginUser }">
+        <c:when test="${not empty sessionScope.superUser }">
         check1()
         </c:when>
 
@@ -167,7 +167,7 @@
 
         <c:choose>
 
-        <c:when test="${empty sessionScope.loginUser }">
+        <c:when test="${empty sessionScope.superUser }">
         check2();
         </c:when>
 
@@ -213,7 +213,7 @@
                                 <td class="alt">${commodity.stock}</td>
                                 <td class="alt">${commodity.type}</td>
                                 <td>
-                                    <a href="commodity?method=add&id=${commodity.id}" class="button" onclick="return check()">加入购物车</a>
+                                    <a href="super?operate=more&id=${commodity.id}" class="button" >修改</a>
                                 </td>
                             </tr>
                         </c:when>
@@ -225,7 +225,7 @@
                                 <td scope="col">${commodity.stock}</td>
                                 <td scope="col">${commodity.type}</td>
                                 <td>
-                                    <a href="commodity?method=add&id=${commodity.id}" class="button" onclick="return check()">加入购物车</a>
+                                    <a href="super?operate=more&id=${commodity.id}" class="button" >修改</a>
                                 </td>
                             </tr>
                         </c:otherwise>
@@ -234,15 +234,16 @@
             </table>
             <br>
                 <c:choose>
-                    <c:when test="${not empty sessionScope.loginUser }">
-                    <a href="/cookieLogout" class="button2">退出登录</a>
+                    <c:when test="${not empty sessionScope.superUser }">
+                        <a href="/superLogout" class="button2">个人中心</a>
                     </c:when>
-                <c:otherwise>
-                    <a href="Login/cookie_login.jsp" class="button2" style="width: 60px">登录</a>
-                </c:otherwise>
+                    <c:otherwise>
+                        <a href="Login/cookie_login.jsp" class="button2" style="width: 60px">登录</a>
+                    </c:otherwise>
                 </c:choose>
-                <a href="Show/select.jsp" class="button2">搜索商品</a>
-                <a href="commodity?method=findCar" class="button2" style="width: 60px" onclick="return checking()">购物车</a>
+                <a href="Show/superSelect.jsp" class="button2">搜索商品</a>
+                <a href="Show/superAdd.jsp" class="button2">添加商品</a>
+                <a href="super?operate=manage" class="button2">用户管理</a>
         </td>
     </tr>
 </table>

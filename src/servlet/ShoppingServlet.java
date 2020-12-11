@@ -16,14 +16,14 @@ import java.util.Map;
 public class ShoppingServlet extends HttpServlet {
 
     static public Map<String, Commodity> consumer_map;
-    static private Map<String, Commodity> commodity_map;
+    public static Map<String, Commodity> commodity_map;
     static private boolean login = false;
-    static productDao productDao = new productDaoImpl();
+    static carDao carDao = new carDaoImpl();
     static userDao userDao = new userDaoImpl();
 
     static {
         try {
-            commodity_map = productDao.get_commodity();
+            commodity_map = carDao.get_commodity();
         } catch (DaoException e) {
             e.printStackTrace();
         }
@@ -52,31 +52,34 @@ public class ShoppingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 
-        //判断登陆状态
-        if(req.getSession().getAttribute("loginUser") != null){
-            login = true;
-            try {
-                consumer_map = userDao.get_userCar();
-            } catch (DaoException e) {
-                e.printStackTrace();
-            }
-        }else {
-            login = false;
-        }
-
         //获取操作名
         String method = req.getParameter("method");
+
+        //判断登陆状态
+        if (req.getSession().getAttribute("superUser") == null){
+            if(req.getSession().getAttribute("loginUser") != null){
+                login = true;
+                try {
+                    consumer_map = userDao.get_userCar();
+                    //初始化用户信息
+                    try {
+                        carDao.getUser();
+                    } catch (DaoException e) {
+                        e.printStackTrace();
+                    }
+                } catch (DaoException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                login = false;
+            }
+        }else {
+            method = "super";
+        }
 
         //初始化操作
         if (method == null){
             method = "findAll";
-        }
-
-        //初始化用户信息
-        try {
-            productDao.getUser();
-        } catch (DaoException e) {
-            e.printStackTrace();
         }
 
         //操作
@@ -87,19 +90,19 @@ public class ShoppingServlet extends HttpServlet {
                     String id = req.getParameter("id");
                     int amount = consumer_map.get(id).getAmount();
                     if (amount > 1){
-                        productDao.deleteProduct(id,amount);
+                        carDao.deleteProduct(id,amount);
                         consumer_map.get(id).setAmount(amount - 1);
                     }else{
-                        productDao.deleteProduct(id,0);
+                        carDao.deleteProduct(id,0);
                         consumer_map.remove(id);
                     }
                     req.setAttribute("map", consumer_map.values());
-                    resp.sendRedirect("commodity?method=findCar");
+                    req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
                     break;
 
                 case "delete":
                     id = req.getParameter("id");
-                    productDao.deleteProduct(id,0);
+                    carDao.deleteProduct(id,0);
                     consumer_map.remove(id);
                     req.setAttribute("map", consumer_map.values());
                     req.getRequestDispatcher("Show/myCar.jsp").forward(req,resp);
@@ -131,19 +134,15 @@ public class ShoppingServlet extends HttpServlet {
 
                 case "addAmount":
                     id = req.getParameter("id");
-                    productDao.addProduct(id,consumer_map.get(id).getAmount());
+                    carDao.addProduct(id,consumer_map.get(id).getAmount());
                     consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
-                    req.setAttribute("map", consumer_map.values());
+                    /*req.setAttribute("map", consumer_map.values());*/
                     resp.sendRedirect("commodity?method=findCar");
                     break;
 
                 case "add":
                     if (login == true){
                         id = req.getParameter("id");
-                        /*Set<Map.Entry<String, Commodity>> temp = commodity_map.entrySet();
-                        Iterator<Map.Entry<String, Commodity>> solve = temp.iterator();
-                        Set<Map.Entry<String, Commodity>> temp2 = consumer_map.entrySet();
-                        Iterator<Map.Entry<String, Commodity>> solve2 = temp2.iterator();*/
                         Commodity value2;
                         if (consumer_map.get(id)==null){
                             Commodity value = commodity_map.get(id);
@@ -153,9 +152,9 @@ public class ShoppingServlet extends HttpServlet {
                             String type = value.getType();
                             value2 = new Commodity(temp_id,name,price,type,1);
                             consumer_map.put(id,value2);
-                            productDao.addProduct(value2);
+                            carDao.addProduct(value2);
                         }else {
-                            productDao.addProduct(id,consumer_map.get(id).getAmount());
+                            carDao.addProduct(id,consumer_map.get(id).getAmount());
                             consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
                         }
                         req.setAttribute("map", consumer_map.values());
@@ -166,7 +165,7 @@ public class ShoppingServlet extends HttpServlet {
                     break;
 
                 case "clean":
-                    productDao.clean();
+                    carDao.clean();
                     consumer_map.clear();
                     resp.sendRedirect("/commodity");
                     break;
@@ -177,6 +176,9 @@ public class ShoppingServlet extends HttpServlet {
                     req.setAttribute("keySearch",keySearch);
                     req.getRequestDispatcher("Show/finding.jsp").forward(req,resp);
                     break;
+
+                case "super":
+                    resp.sendRedirect("/super");
             }
         } catch (DaoException e) {
             e.printStackTrace();

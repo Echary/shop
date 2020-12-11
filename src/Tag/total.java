@@ -2,7 +2,6 @@ package Tag;
 import entity.Commodity;
 
 import java.io.IOException;
-import java.util.*;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;

@@ -7,6 +7,15 @@ public class User {
     private int age;
     private int sex;
     private String car;
+    private String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getId() {
         return id;
@@ -64,4 +73,15 @@ public class User {
         this.sex = sex;
         this.car = car;
     }
+
+    public User(String id, String name, String password, int age, int sex, String car, String date) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.age = age;
+        this.sex = sex;
+        this.car = car;
+        this.date = date;
+    }
+
 }

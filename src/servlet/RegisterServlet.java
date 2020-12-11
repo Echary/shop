@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -17,7 +16,7 @@ import java.util.Date;
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 
-    static productDao productDao = new productDaoImpl();
+    static carDao carDao = new carDaoImpl();
     static userDao userDao = new userDaoImpl();
 
     @Override

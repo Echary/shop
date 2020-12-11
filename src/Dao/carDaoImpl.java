@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class productDaoImpl implements productDao {
+public class carDaoImpl implements carDao {
 
     static private Map<String, Commodity> map = new HashMap<>();
-    static productDao productDao = new productDaoImpl();
+    static carDao carDao = new carDaoImpl();
     static userDao userDao = new userDaoImpl();
     static private entity.User user;
 
@@ -30,6 +30,7 @@ public class productDaoImpl implements productDao {
                 String type = resultSet.getString("type");
                 map.put(id,new Commodity(id,name,price,stock,type));
             }
+
             pstmt.close();
             connection.close();
         } catch (SQLException e){

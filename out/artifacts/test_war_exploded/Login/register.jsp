@@ -39,7 +39,7 @@
             用户名：
         </td>
         <td>
-        <input type="text" name="userName" id="userName"/><span id="msg"></span>
+        <input type="text" name="userName" id="userName" required="required"/><span id="msg"></span>
         </td>
 
     </tr>
@@ -48,7 +48,7 @@
             密码：
         </td>
         <td>
-            <input type="password" name="password"/>
+            <input type="password" name="password" required="required"/>
         </td>
     </tr>
     <tr>
@@ -56,7 +56,7 @@
             年 龄：
         </td>
         <td>
-            <input type="age" name="age">
+            <input type="age" name="age" required="required">
         </td>
     </tr>
     <tr>

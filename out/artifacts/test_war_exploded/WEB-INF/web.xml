@@ -21,8 +21,6 @@
         <session-timeout>30</session-timeout>
     </session-config>
 
-
-
     <filter>
         <filter-name>wordFilter</filter-name>
         <filter-class>filter.wordFilter</filter-class>

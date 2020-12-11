@@ -149,7 +149,7 @@
                             </th>
 
                             <td class="nobg">
-                                <input type="text" name="username"/>
+                                <input type="text" name="username" />
                             </td>
                         </tr>
 
@@ -163,12 +163,23 @@
                             </td>
                         </tr>
 
+                        <br>
+
                         <tr>
                             <td class="ifr" colspan="2">
                                 <input type="submit" style="width:50px" value="登录" class="button2">
                                 <input type="button" style="width:50px" value="注册" onclick="javascript:location.href='register.jsp'" class="button2">
+                                <br>
+                                <br>
+
+                                <a href="/Login/superLogin.jsp">管理员登录</a>
                             </td>
+
+
                         </tr>
+
+
+
                     </table>
                 </form>
             </table>

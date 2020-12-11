@@ -3,7 +3,7 @@ package Dao;
 import entity.Commodity;
 import java.util.Map;
 
-public interface productDao extends Dao{
+public interface carDao extends Dao{
 
     //获得所有产品
     Map<String, Commodity> get_commodity() throws DaoException;

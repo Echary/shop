@@ -152,7 +152,7 @@
     function check(){
         <c:choose>
 
-        <c:when test="${not empty sessionScope.loginUser }">
+        <c:when test="${not empty sessionScope.superUser }">
         check1()
         </c:when>
 
@@ -167,7 +167,7 @@
 
         <c:choose>
 
-        <c:when test="${empty sessionScope.loginUser }">
+        <c:when test="${empty sessionScope.superUser }">
         check2();
         </c:when>
 
@@ -188,44 +188,35 @@
     <number:count/>
     <tr>
         <td style="width:100%;" align="center" valign="middle"  >
-            <table id="mytable" cellspacing="0" width="50%" weight="50%">
+            <table id="mytable" cellspacing="0" width="20%" weight="50%" style="width: 25%">
                 <tr>
-                    <th colspan="6" class="nobg" >商品列表</th>
+                    <th colspan="6" class="nobg" >用户列表</th>
                 </tr>
                 <tr>
-                    <th scope="col" class="nobg">商品编号</th>
-                    <th scope="col" >商品名称</th>
-                    <th scope="col" >商品价格</th>
-                    <th scope="col" >商品库存</th>
-                    <th scope="col" >商品类别</th>
-                    <th scope="col" >操作</th>
+                    <th scope="col" class="nobg" style="width: 20%">用户ID</th>
+                    <th scope="col" style="width: 20%">用户名称</th>
+                    <th scope="col" style="width: 20%">操作</th>
                 </tr>
                 <c:set var="flag" value="1"></c:set>
                 <c:set var="flag2" value="1"></c:set>
-                <c:forEach items="${map2}" var="commodity">
+                <c:forEach items="${User}" var="user">
                     <c:set var="flag" value="${flag + flag2}"></c:set>
                     <c:choose>
                         <c:when test="${flag%2 == 0}">
                             <tr>
-                                <th scope="row" class="specalt">${commodity.id}</th>
-                                <td class="alt">${commodity.name}</td>
-                                <td class="alt">${commodity.price}</td>
-                                <td class="alt">${commodity.stock}</td>
-                                <td class="alt">${commodity.type}</td>
+                                <th scope="row" class="specalt">${user.id}</th>
+                                <td class="alt">${user.name}</td>
                                 <td>
-                                    <a href="commodity?method=add&id=${commodity.id}" class="button" onclick="return check()">加入购物车</a>
+                                    <a href="super?operate=userMore&id=${user.id}" class="button" >修改</a>
                                 </td>
                             </tr>
                         </c:when>
                         <c:otherwise>
                             <tr>
-                                <th scope="row" class="spec">${commodity.id}</th>
-                                <td scope="col">${commodity.name}</td>
-                                <td scope="col">${commodity.price}</td>
-                                <td scope="col">${commodity.stock}</td>
-                                <td scope="col">${commodity.type}</td>
+                                <th scope="row" class="spec">${user.id}</th>
+                                <td scope="col">${user.name}</td>
                                 <td>
-                                    <a href="commodity?method=add&id=${commodity.id}" class="button" onclick="return check()">加入购物车</a>
+                                    <a href="super?operate=userMore&id=${user.id}" class="button" >修改</a>
                                 </td>
                             </tr>
                         </c:otherwise>
@@ -233,16 +224,8 @@
                 </c:forEach>
             </table>
             <br>
-                <c:choose>
-                    <c:when test="${not empty sessionScope.loginUser }">
-                    <a href="/cookieLogout" class="button2">退出登录</a>
-                    </c:when>
-                <c:otherwise>
-                    <a href="Login/cookie_login.jsp" class="button2" style="width: 60px">登录</a>
-                </c:otherwise>
-                </c:choose>
-                <a href="Show/select.jsp" class="button2">搜索商品</a>
-                <a href="commodity?method=findCar" class="button2" style="width: 60px" onclick="return checking()">购物车</a>
+                <a href="super?operate=findAll" class="button2" style="width: 60px">返回</a>
+                <a href="Show/superMS.jsp" class="button2">搜索用户</a>
         </td>
     </tr>
 </table>

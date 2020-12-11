@@ -7,16 +7,20 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="number" uri="http://number.com" %>
 <html>
 <head>
-    <title>商品列表</title>
+    <title>商品搜索</title>
 </head>
 <body>
-
 <style>
-    input.button2 {
+
+
+    input::-ms-input-placeholder{
+        text-align: center;
+    }
+
+    a.button2 {
         height: 30px;
         line-height: 30px;
         padding: 0 11px;
@@ -26,6 +30,21 @@
         display: inline-block;
         text-decoration: none;
         font-size: 15px;
+        outline: none;
+        color: #4f6b72;
+    }
+
+    input.button {
+
+        height: 21px;
+        line-height: 21px;
+        padding: 0 11px;
+        background: #fff;
+        border: 1px #26bbdb solid;
+        border-radius: 3px;
+        display: inline-block;
+        text-decoration: none;
+        font-size: 14px;
         outline: none;
         color: #4f6b72;
     }
@@ -40,13 +59,12 @@
         background: #E6EAE9;
     }
 
-
     a {
         color: #c75f3e;
     }
 
     #mytable {
-        width: 700px;
+        width: 500px;
         padding: 0;
         margin: 0;
     }
@@ -73,12 +91,12 @@
     }
 
     th.nobg {
-        border-top: 2px solid #C1DAD7;
-        border-left: 2px solid #C1DAD7;
-        border-right: 2px solid #C1DAD7;
+        border-top: 1px solid #C1DAD7;
+        border-left: 1px solid #C1DAD7;
+        border-right: 1px solid #C1DAD7;
         background: none;
         padding: 6px 6px 6px 12px;
-        border-bottom: 2px solid #C1DAD7;
+        border-bottom: 1px solid #C1DAD7;
     }
 
     td {
@@ -89,7 +107,6 @@
         padding: 6px 6px 6px 12px;
         color: #4f6b72;
     }
-
 
 
     td.alt {
@@ -112,15 +129,6 @@
         color: #797268;
     }
 
-    td.temp{
-        border-top: 0px solid;
-        border-left: 0px solid ;
-        border-right: 0px solid ;
-        background: none;
-        padding: 6px 6px 6px 12px;
-        border-bottom: 0px solid ;
-    }
-
     .ifr{
         position: relative;
         z-index:1003;
@@ -131,63 +139,41 @@
     html>body td{ font-size:15px;}
 
 </style>
-
 <table border=0 cellpadding=0 cellspacing=0 style="width:100% ;height:100%">
-<number:count/>
+    <number:count/>
     <tr>
 
         <td style="width:100%;" align="center" valign="middle"  >
 
 
             <table id="mytable" cellspacing="0" width="50%" weight="50%">
-                <form action="/cookieLogin" method="get">        <!--向服务器发出post请求-->
-                    <table>
 
-                        <tr>
-                            <th scope="col">
-                                用户名:
-                            </th>
+                <tr>
+                    <th scope="col" class="nobg" >输入商品</th>
+                    <th scope="col" >操作</th>
 
-                            <td class="nobg">
-                                <input type="text" name="username" />
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th scope="col">
-                                密码:
-                            </th>
-
-                            <td class="nobg">
-                                <input type="password" name="password"/>
-                            </td>
-                        </tr>
-
-                        <br>
-
-                        <tr>
-                            <td class="ifr" colspan="2">
-                                <input type="submit" style="width:50px" value="登录" class="button2">
-                                <input type="button" style="width:50px" value="注册" onclick="javascript:location.href='register.jsp'" class="button2">
-                                <br>
-                                <br>
-
-                                <a href="/Login/superLogin.jsp">管理员登录</a>
-                            </td>
+                    <form action="/super" method="get">
+                <tr>
+                    <th scope="row" class="specalt">
+                        <input type="text" name="keySearch" style= "height:28px;width: 100%" class="button" style="width:450px;" placeholder="请输入用户名或关键字">
+                    </th>
 
 
-                        </tr>
+                    <input type="hidden" name="operate" value="userFind" >
 
+                    <td class="alt">
+                        <input type="submit" class="button" style= "height:28px" value="搜索">
+                    </td>
 
-
-                    </table>
+                </tr>
                 </form>
-            </table>
 
+            </table>
+            <br>
+            <a href="/super?operate=manage" class="button2" style="width:  45px">返回</a>
         </td>
     </tr>
 
 </table>
-
 </body>
 </html>
