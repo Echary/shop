@@ -35,4 +35,38 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!-- 配置登录验证的过滤器 -->
+    <filter>
+        <filter-name>superFilter</filter-name>
+        <filter-class>filter.superFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>superFilter</filter-name>
+        <!-- 如果用户访问以下的路径则必须保证登录 -->
+        <url-pattern>/Show/superMe.jsp</url-pattern>
+        <url-pattern>/Show/commodityUpdate.jsp</url-pattern>
+        <url-pattern>/Show/super.jsp</url-pattern>
+        <url-pattern>/Show/superAdd.jsp</url-pattern>
+        <url-pattern>/Show/superFinding.jsp</url-pattern>
+        <url-pattern>/Show/superManage.jsp</url-pattern>
+        <url-pattern>/Show/superMe.jsp</url-pattern>
+        <url-pattern>/Show/superMF.jsp</url-pattern>
+        <url-pattern>/Show/superMS.jsp</url-pattern>
+        <url-pattern>/Show/superSelect.jsp</url-pattern>
+        <url-pattern>/Show/userUpdate.jsp</url-pattern>
+        <url-pattern>/Show/superWelcome.jsp</url-pattern>
+        <url-pattern>/super</url-pattern>
+    </filter-mapping>
+
+
+    <filter>
+        <filter-name>userFilter</filter-name>
+        <filter-class>filter.userFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>userFilter</filter-name>
+        <!-- 如果用户访问以下的路径则必须保证登录 -->
+        <url-pattern>/Login/cookie_welcome.jsp</url-pattern>
+    </filter-mapping>
+
 </web-app>

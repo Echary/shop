@@ -138,6 +138,18 @@
         color: #797268;
     }
 
+    .round_icon{
+        width: 34px;
+        height: 34px;
+        display: flex;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+
+
     html>body td{ font-size:15px;}
 
 </style>
@@ -153,65 +165,49 @@
 
 
                 <tr>
-                    <th colspan="2" class="nobg" >用户信息</th>
+                    <th colspan="2" class="nobg" >管理员信息</th>
                 </tr>
 
-                <c:set var="user" value="${userMessage}"></c:set>
+                <c:set var="superUser" value="${superMessage}"></c:set>
+                <c:set var="picture" value="${path}"></c:set>
+                <img src="${pageContext.request.contextPath}/${picture}" class="round_icon"  alt="" >
 
                 <form action="/super" method="get" name="form1">
                     <input hidden name="operate" value="userUpdate">
+
                     <tr>
-                        <th style="width: 50%;" scope="col" class="nobg">用户ID</th>
+                        <th style="width: 50%;" scope="col" class="nobg">ID</th>
                         <td class="nobg">
-                            <input type='text' text name='id' value='${user.id}' style= "height:28px;width: 100%;text-align: center" placeholder='用户ID' readonly>
+                            <input type='text' text name='id' value='${superUser.id}' style= "height:28px;width: 100%;text-align: center" placeholder='用户ID' readonly>
                         </td>
                     </tr>
 
                     <tr>
-                        <th scope="col" >用户名称</th>
+                        <th scope="col" >名称</th>
                         <td class="nobg">
-                            <input type='text' text name='name' value='${user.name}' style= "height:28px;width: 100%;text-align: center" placeholder='用户名称'>
+                            <input type='text' text name='name' value='${superUser.name}' style= "height:28px;width: 100%;text-align: center" placeholder='用户名称' readonly>
                         </td>
                     </tr>
 
                     <tr>
-                        <th scope="col" >用户密码</th>
+                        <th scope="col" >密码</th>
                         <td class="nobg">
-                            <input type='text' text name='password' value='${user.password}' style= "height:28px;width: 100%;text-align: center" placeholder='用户密码'>
+                            <input type='text' text name='password' value='${superUser.password}' style= "height:28px;width: 100%;text-align: center" placeholder='用户密码' readonly>
                         </td>
                     </tr>
 
-                    <tr>
-                        <th scope="col" >用户年龄</th>
-                        <td class="nobg">
-                            <input type='text' text name='age' value='${user.age}' style= "height:28px;width: 100%;text-align: center" placeholder='用户年龄'>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th scope="col" >用户性别</th>
-                        <td class="nobg">
-                            <input type='text' text name='sex'
-
-                            <c:choose>
-                            <c:when test="${user.sex == 0}">
-                                   value='男'
-                            </c:when>
-                                    <c:otherwise>
-                                   value='女'
-                            </c:otherwise>
-                            </c:choose>
-                                   style= "height:28px;width: 100%;text-align: center" placeholder='用户性别'>
-                        </td>
-                    </tr>
                 </form>
             </table>
             <br>
-            <a href="/super?operate=manage" class="button2" style="width: 60px">返回</a>
-            <a href="javascript:void(0)" onclick="form1.submit();" class="button2" style="width: 60px">修改</a>
+            <a href="/super?operate=findAll" class="button2" style="width: 60px">返回</a>
+            <a href="/upload/upload.jsp" class="button2" style="width: 60px">我的头像</a>
+            <br>
+            <br>
+            <a href="/cookieLogout" style="width: 60px">退出登录</a>
         </td>
     </tr>
 </table>
+
 
 </body>
 </html>

@@ -36,4 +36,7 @@ public interface superDao extends Dao{
 
     //修改用户
     void updateUser(String id, String name, String password, int age, int sex, String car) throws DaoException;
+
+    //登出
+    void logOut() throws DaoException;
 }

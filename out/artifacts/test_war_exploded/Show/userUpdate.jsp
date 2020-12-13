@@ -153,7 +153,7 @@
 
 
                 <tr>
-                    <th colspan="2" class="nobg" >商品信息</th>
+                    <th colspan="2" class="nobg" >用户信息</th>
                 </tr>
 
                 <c:set var="user" value="${userMessage}"></c:set>

@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static servlet.ShoppingServlet.consumer_map;
+import static servlet.SuperServlet.user_map;
+
 public class superDaoImpl implements superDao{
 
     static private String superName;
@@ -236,6 +239,11 @@ public class superDaoImpl implements superDao{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void logOut() throws DaoException {
+        user_map.clear();
     }
 
 

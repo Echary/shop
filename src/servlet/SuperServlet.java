@@ -1,7 +1,9 @@
 package servlet;
 
 import Dao.*;
+import com.mysql.cj.Session;
 import entity.Commodity;
+import entity.Super;
 import entity.User;
 
 import javax.servlet.ServletException;
@@ -20,7 +22,6 @@ public class SuperServlet extends HttpServlet {
 
     public static Map<String, Commodity> commodity_map;
     public static Map<String, User> user_map;
-    static private boolean login = false;
     static superDao superDao = new superDaoImpl();
     static carDao carDao = new carDaoImpl();
 
@@ -41,18 +42,12 @@ public class SuperServlet extends HttpServlet {
     int age;
     int sex;
 
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         //获取操作名
         String operate = req.getParameter("operate");
-
-        //判断登陆状态
-        if (req.getSession().getAttribute("superUser") == null){
-            login = true;
-        }else {
-            login = false;
-        }
 
         //初始化操作
         if (operate == null){
@@ -169,7 +164,7 @@ public class SuperServlet extends HttpServlet {
                 } catch (DaoException e) {
                     e.printStackTrace();
                 }
-                resp.sendRedirect("commodity?operate=manage");
+                resp.sendRedirect("super?operate=manage");
                 break;
 
             case "userFind":
@@ -182,6 +177,21 @@ public class SuperServlet extends HttpServlet {
                 keySearch = req.getParameter("keySearch");
                 req.setAttribute("keySearch",keySearch);
                 req.getRequestDispatcher("Show/superMF.jsp").forward(req,resp);
+                break;
+                
+            case "getSuper":
+                Super superUser = null;
+                try {
+                    superUser = superDao.getSuper();
+                } catch (DaoException e) {
+                    e.printStackTrace();
+                }
+
+                String path = "file/" + req.getSession().getAttribute("superUser") + ".jpg";
+                req.setAttribute("path",path);
+
+                req.setAttribute("superMessage",superUser);
+                req.getRequestDispatcher("Show/superMe.jsp").forward(req,resp);
                 break;
         }
 

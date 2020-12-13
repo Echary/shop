@@ -178,6 +178,7 @@ public class ShoppingServlet extends HttpServlet {
                     break;
 
                 case "super":
+                    if (req.getSession().getAttribute("superUser") != null) System.out.println("Ã»µÇ³ö");
                     resp.sendRedirect("/super");
             }
         } catch (DaoException e) {
