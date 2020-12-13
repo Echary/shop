@@ -67,6 +67,7 @@
         <filter-name>userFilter</filter-name>
         <!-- 如果用户访问以下的路径则必须保证登录 -->
         <url-pattern>/Login/cookie_welcome.jsp</url-pattern>
+        <url-pattern>/Show/myCar.jsp</url-pattern>
     </filter-mapping>
 
 </web-app>
