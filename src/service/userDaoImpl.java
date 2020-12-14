@@ -1,11 +1,14 @@
-package Dao;
+package service;
 
+import Dao.Dao;
+import Dao.DaoException;
+import Dao.userDao;
 import entity.Commodity;
 
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
-import static servlet.ShoppingServlet.consumer_map;
+import static action.ShoppingServlet.consumer_map;
 
 public class userDaoImpl implements userDao {
 
@@ -13,7 +16,7 @@ public class userDaoImpl implements userDao {
     static private Map<String, Commodity> map2 = new HashMap<>();
 
     //µÇÂ¼¼ì²â
-    public boolean check(String user_name, String user_password) throws DaoException{
+    public boolean check(String user_name, String user_password) throws DaoException {
         boolean check = false;
         try {
             Connection connection = null;

@@ -1,12 +1,13 @@
-package servlet;
+package action;
 
 import Dao.*;
+import service.userDaoImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import static servlet.LoginServlet.login;
+import static action.LoginServlet.login;
 
 @WebServlet("/superLogout")
 public class SuperLogoutServlet extends HttpServlet {

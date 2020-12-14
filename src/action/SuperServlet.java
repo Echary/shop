@@ -1,10 +1,12 @@
-package servlet;
+package action;
 
 import Dao.*;
 import com.mysql.cj.Session;
 import entity.Commodity;
 import entity.Super;
 import entity.User;
+import service.carDaoImpl;
+import service.superDaoImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -164,6 +166,12 @@ public class SuperServlet extends HttpServlet {
                 } catch (DaoException e) {
                     e.printStackTrace();
                 }
+
+                user_map.get(id).setName(name);
+                user_map.get(id).setAge(age);
+                user_map.get(id).setSex(sex);
+                user_map.get(id).setPassword(password);
+
                 resp.sendRedirect("super?operate=manage");
                 break;
 
@@ -187,7 +195,7 @@ public class SuperServlet extends HttpServlet {
                     e.printStackTrace();
                 }
 
-                String path = "file/" + req.getSession().getAttribute("superUser") + ".jpg";
+                String path = req.getSession().getAttribute("superUser") + ".jpg";
                 req.setAttribute("path",path);
 
                 req.setAttribute("superMessage",superUser);

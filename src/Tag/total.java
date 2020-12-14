@@ -8,7 +8,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import static servlet.ShoppingServlet.consumer_map;
+import static action.ShoppingServlet.consumer_map;
 
 public class total extends TagSupport {
 

@@ -1,12 +1,15 @@
-package servlet;
+package action;
 
 import Dao.*;
+import service.superDaoImpl;
+import service.userDaoImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import static servlet.LoginServlet.login;
+import static action.LoginServlet.login;
+import static action.SuperServlet.user_map;
 
 @WebServlet("/cookieLogout")
 public class LogoutServlet extends HttpServlet {
@@ -22,7 +25,7 @@ public class LogoutServlet extends HttpServlet {
             if (cookie.getName().equals("name")){
                 login = false;
 
-                if (req.getSession().getAttribute("loginUer")!=null){
+                if (req.getSession().getAttribute("loginUser")!=null){
 
                     try {
                         userDao.logOut();
@@ -34,7 +37,7 @@ public class LogoutServlet extends HttpServlet {
 
             }else if (req.getSession().getAttribute("superUser")!=null) {
                     try {
-                        superDao.logOut();
+                        if (user_map != null) superDao.logOut();
                     } catch (DaoException e) {
                         e.printStackTrace();
                     }

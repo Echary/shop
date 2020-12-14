@@ -170,7 +170,7 @@
 
                 <c:set var="superUser" value="${superMessage}"></c:set>
                 <c:set var="picture" value="${path}"></c:set>
-                <img src="${pageContext.request.contextPath}/${picture}" class="round_icon"  alt="" >
+                <img src="/file/${path}" class="round_icon"  alt="" >
 
                 <form action="/super" method="get" name="form1">
                     <input hidden name="operate" value="userUpdate">

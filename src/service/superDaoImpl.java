@@ -1,5 +1,8 @@
-package Dao;
+package service;
 
+import Dao.Dao;
+import Dao.DaoException;
+import Dao.superDao;
 import entity.Super;
 import entity.User;
 
@@ -10,10 +13,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static servlet.ShoppingServlet.consumer_map;
-import static servlet.SuperServlet.user_map;
+import static action.SuperServlet.user_map;
 
-public class superDaoImpl implements superDao{
+public class superDaoImpl implements superDao {
 
     static private String superName;
     static private Map<String, User> userMap = new HashMap<>();

@@ -2,7 +2,7 @@ package ajax;
 
 import Dao.DaoException;
 import Dao.userDao;
-import Dao.userDaoImpl;
+import service.userDaoImpl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
