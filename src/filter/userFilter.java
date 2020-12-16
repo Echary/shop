@@ -23,7 +23,7 @@ public class userFilter implements Filter{
 
         HttpServletRequest req = (HttpServletRequest)request;
         HttpServletResponse resp = (HttpServletResponse)response;
-        if (req.getSession().getAttribute("loginUser")==null) {
+        if (req.getSession().getAttribute("loginUser")==null && req.getSession().getAttribute("superUser")==null) {
             resp.sendRedirect("/Login/cookie_login.jsp");
         }else {
             chain.doFilter(req, resp);

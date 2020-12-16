@@ -4,23 +4,21 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+
+
     <listener>
         <listener-class>Listener.contextListener</listener-class>
     </listener>
-
     <listener>
         <listener-class>Listener.sessionListener</listener-class>
     </listener>
-
     <context-param>
         <param-name>name</param-name>
         <param-value>shop</param-value>
     </context-param>
-
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-
     <filter>
         <filter-name>wordFilter</filter-name>
         <filter-class>filter.wordFilter</filter-class>
@@ -29,20 +27,17 @@
             <param-value>UTF-8</param-value>
         </init-param>
     </filter>
-
     <filter-mapping>
         <filter-name>wordFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- 配置登录验证的过滤器 -->
     <filter>
         <filter-name>superFilter</filter-name>
         <filter-class>filter.superFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>superFilter</filter-name>
-        <!-- 如果用户访问以下的路径则必须保证登录 -->
         <url-pattern>/Show/superMe.jsp</url-pattern>
         <url-pattern>/Show/commodityUpdate.jsp</url-pattern>
         <url-pattern>/Show/super.jsp</url-pattern>
@@ -54,10 +49,8 @@
         <url-pattern>/Show/superMS.jsp</url-pattern>
         <url-pattern>/Show/superSelect.jsp</url-pattern>
         <url-pattern>/Show/userUpdate.jsp</url-pattern>
-        <url-pattern>/Show/superWelcome.jsp</url-pattern>
         <url-pattern>/super</url-pattern>
     </filter-mapping>
-
 
     <filter>
         <filter-name>userFilter</filter-name>
@@ -65,9 +58,10 @@
     </filter>
     <filter-mapping>
         <filter-name>userFilter</filter-name>
-        <!-- 如果用户访问以下的路径则必须保证登录 -->
-        <url-pattern>/Login/cookie_welcome.jsp</url-pattern>
         <url-pattern>/Show/myCar.jsp</url-pattern>
+        <url-pattern>/commodity</url-pattern>
     </filter-mapping>
+
+
 
 </web-app>

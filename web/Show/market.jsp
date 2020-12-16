@@ -241,7 +241,7 @@
                     <a href="Login/cookie_login.jsp" class="button2" style="width: 60px">登录</a>
                 </c:otherwise>
                 </c:choose>
-                <a href="Show/select.jsp" class="button2">搜索商品</a>
+                <a href="Show/select.jsp" class="button2" >搜索商品</a>
                 <a href="commodity?method=findCar" class="button2" style="width: 60px" onclick="return checking()">购物车</a>
         </td>
     </tr>

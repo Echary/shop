@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 @WebServlet("/superLogin")
 public class SuperLoginServlet extends HttpServlet {
 
-    public static boolean login = false;
     private static boolean check = false;
     static Dao.superDao superDao = new superDaoImpl();
 
@@ -27,12 +26,12 @@ public class SuperLoginServlet extends HttpServlet {
             e.printStackTrace();
         }
         if (check == true){
-            Cookie cookie = new Cookie("name",superName);
-            HttpSession session = req.getSession();
-            session.setAttribute("superUser", superName);
-            resp.addCookie(cookie);
-            login = true;
-            resp.sendRedirect("Login/superWelcome.jsp");
+
+            req.setAttribute("superName", superName);
+            req.setAttribute("superPassword", superPassword);
+            req.setAttribute("check",check);
+            req.getRequestDispatcher("Login/superWelcome.jsp").forward(req, resp);
+
         }else {
             resp.setContentType("text/html; charset=UTF-8"); //зЊТы
             PrintWriter out = resp.getWriter();

@@ -20,7 +20,6 @@ public class ShoppingServlet extends HttpServlet {
 
     static public Map<String, Commodity> consumer_map;
     public static Map<String, Commodity> commodity_map;
-    static private boolean login = false;
     static carDao carDao = new carDaoImpl();
     static userDao userDao = new userDaoImpl();
 
@@ -61,7 +60,6 @@ public class ShoppingServlet extends HttpServlet {
         //判断登陆状态
         if (req.getSession().getAttribute("superUser") == null){
             if(req.getSession().getAttribute("loginUser") != null){
-                login = true;
                 try {
                     consumer_map = userDao.get_userCar();
                     //初始化用户信息
@@ -73,9 +71,8 @@ public class ShoppingServlet extends HttpServlet {
                 } catch (DaoException e) {
                     e.printStackTrace();
                 }
-            }else {
-                login = false;
             }
+
         }else {
             method = "super";
         }
@@ -117,22 +114,19 @@ public class ShoppingServlet extends HttpServlet {
                     break;
 
                 case "findCar":
-                    if (login == true) {
-                        if (consumer_map.isEmpty()) {
-                            resp.setContentType("text/html; charset=UTF-8"); //转码
-                            PrintWriter out = resp.getWriter();
-                            out.flush();
-                            out.println("<script>");
-                            out.println("alert('购物车为空,请添加购物车!');");
-                            out.println("history.back();");
-                            out.println("</script>");
-                        }else {
-                            req.setAttribute("map", consumer_map.values());
-                            req.getRequestDispatcher("Show/myCar.jsp").forward(req, resp);
-                        }
+                    if (consumer_map.isEmpty()) {
+                        resp.setContentType("text/html; charset=UTF-8"); //转码
+                        PrintWriter out = resp.getWriter();
+                        out.flush();
+                        out.println("<script>");
+                        out.println("alert('购物车为空,请添加购物车!');");
+                        out.println("history.back();");
+                        out.println("</script>");
                     }else {
-                        resp.sendRedirect("Login/cookie_login.jsp");
+                        req.setAttribute("map", consumer_map.values());
+                        req.getRequestDispatcher("Show/myCar.jsp").forward(req, resp);
                     }
+
                     break;
 
                 case "addAmount":
@@ -144,27 +138,23 @@ public class ShoppingServlet extends HttpServlet {
                     break;
 
                 case "add":
-                    if (login == true){
-                        id = req.getParameter("id");
-                        Commodity value2;
-                        if (consumer_map.get(id)==null){
-                            Commodity value = commodity_map.get(id);
-                            String temp_id = value.getId();
-                            String name = value.getName();
-                            double price = value.getPrice();
-                            String type = value.getType();
-                            value2 = new Commodity(temp_id,name,price,type,1);
-                            consumer_map.put(id,value2);
-                            carDao.addProduct(value2);
-                        }else {
-                            carDao.addProduct(id,consumer_map.get(id).getAmount());
-                            consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
-                        }
-                        req.setAttribute("map", consumer_map.values());
-                        resp.sendRedirect("/commodity");
+                    id = req.getParameter("id");
+                    Commodity value2;
+                    if (consumer_map.get(id)==null){
+                        Commodity value = commodity_map.get(id);
+                        String temp_id = value.getId();
+                        String name = value.getName();
+                        double price = value.getPrice();
+                        String type = value.getType();
+                        value2 = new Commodity(temp_id,name,price,type,1);
+                        consumer_map.put(id,value2);
+                        carDao.addProduct(value2);
                     }else {
-                        resp.sendRedirect("Login/cookie_login.jsp");
+                        carDao.addProduct(id,consumer_map.get(id).getAmount());
+                        consumer_map.get(id).setAmount(consumer_map.get(id).getAmount() + 1);
                     }
+                    req.setAttribute("map", consumer_map.values());
+                    resp.sendRedirect("/commodity");
                     break;
 
                 case "clean":

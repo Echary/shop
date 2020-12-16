@@ -203,7 +203,7 @@
             <a href="/upload/upload.jsp" class="button2" style="width: 60px">我的头像</a>
             <br>
             <br>
-            <a href="/cookieLogout" style="width: 60px">退出登录</a>
+            <a href="/superLogout" style="width: 60px">退出登录</a>
         </td>
     </tr>
 </table>

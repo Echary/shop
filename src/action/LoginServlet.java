@@ -12,12 +12,11 @@ import java.io.PrintWriter;
 @WebServlet("/cookieLogin")
 public class LoginServlet extends HttpServlet {
 
-    public static boolean login = false;
     private static boolean check = false;
     static userDao userDao = new userDaoImpl();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String username = req.getParameter("username");
         String password =  req.getParameter("password");
@@ -27,12 +26,12 @@ public class LoginServlet extends HttpServlet {
             e.printStackTrace();
         }
         if (check == true){
-            Cookie cookie = new Cookie("name",username);
-            HttpSession session = req.getSession();
-            session.setAttribute("loginUser", username);
-            resp.addCookie(cookie);
-            login = true;
-            resp.sendRedirect("Login/cookie_welcome.jsp");
+
+            req.setAttribute("username", username);
+            req.setAttribute("password", password);
+            req.setAttribute("check",check);
+            req.getRequestDispatcher("Login/cookie_welcome.jsp").forward(req, resp);
+
         }else {
             resp.setContentType("text/html; charset=UTF-8"); //转码
             PrintWriter out = resp.getWriter();
@@ -41,7 +40,6 @@ public class LoginServlet extends HttpServlet {
             out.println("alert('用户名或密码错误!');");
             out.println("history.back();");
             out.println("</script>");
-            /*resp.sendRedirect("Login/cookie_login.jsp");*/
         }
     }
 }

@@ -8,8 +8,6 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import static action.LoginServlet.login;
-import static action.SuperServlet.user_map;
 
 @WebServlet("/cookieLogout")
 public class LogoutServlet extends HttpServlet {
@@ -19,11 +17,25 @@ public class LogoutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Cookie[] cookies = req.getCookies();
-        for (Cookie cookie:cookies){
 
-            if (cookie.getName().equals("name")){
-                login = false;
+        Cookie[] cookies = req.getCookies();
+        for (Cookie cookie:cookies) {
+
+            if (cookie.getName().equals("username")) {
+                cookie.setMaxAge(0);
+                resp.addCookie(cookie);
+            }
+
+            if (cookie.getName().equals("userPassword")) {
+                cookie.setMaxAge(0);
+                resp.addCookie(cookie);
+            }
+        }
+
+        req.getSession().removeAttribute("loginUser");
+        req.getSession().removeAttribute("userPassword");
+
+        /*if (cookie.getName().equals(req.getSession().getAttribute("loginUser"))){
 
                 if (req.getSession().getAttribute("loginUser")!=null){
 
@@ -34,6 +46,7 @@ public class LogoutServlet extends HttpServlet {
                     }
 
                     req.getSession().removeAttribute("loginUser");
+                    req.getSession().removeAttribute("userPassword");
 
             }else if (req.getSession().getAttribute("superUser")!=null) {
                     try {
@@ -45,15 +58,17 @@ public class LogoutServlet extends HttpServlet {
                     req.getSession().removeAttribute("superUser");
             }
 
-                cookie.setMaxAge(0);/*
-                req.getSession().invalidate();*/
+                cookie.setMaxAge(0);
+                *//*req.getSession().invalidate();*//*
 
 
-                resp.addCookie(cookie);
-                resp.sendRedirect("/Login/cookie_logout.jsp");
-            }
-        }
+                resp.addCookie(cookie);*/
+
+        resp.sendRedirect("/Login/cookie_logout.jsp");
+
     }
+
 }
+
 
 
